@@ -1,0 +1,24 @@
+{% extends "registration/accounts_base.html" %}
+{% block title %}- Logout{% endblock %}
+
+{% block content %}
+<style>
+    /*색상 변경 코드 추가*/
+.btn-outline-success:active,
+.btn-outline-success:visited,
+.btn-outline-success:active:focus,
+.btn-outline-success:active:hover {
+    border-color: #57B59A;
+    background-color: #57B59A;
+    }
+</style>
+<br/><br/><br/><br/><br/>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 panel panel-default">
+        <div class="alert alert-info">로그아웃 되었습니다.</div>
+        <a class="btn btn-outline-success" href="/accounts/login">로그인</a>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}

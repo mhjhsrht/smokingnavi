@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% block title %}- 지도 페이지{% endblock %}
+
+{% block content %}
+
+<style>
+    #map {margin:0px auto;}
+
+    .box {
+    position : absolute;
+    top : 180px;
+    left: 15px;
+    width: 97%;
+
+    text-align: center;
+    border: 3px solid #57B59A;
+    border-radius: 10px;
+    padding: 2%;
+    background: #FDFFFF;
+    }
+
+#map{position:relative;overflow:hidden;}
+.dropdown, .dropdown *{margin:0;color:#000;}
+.dropdown {position:absolute;top:10px;left:10px;z-index:10;text-align:center;background-color:#fff;}
+
+.typebox {width: 144px; position:absolute; top:10px; right:10px; z-index:10; text-align:center; background-color:#fff; padding : 7px;
+          border-radius:10px;}
+.smalltype {margin-bottom:3px;}
+</style>
+
+
+<br>
+
+<div class="box">
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=541b6d15b257b828a3da0c50a02d541e"></script>
+
+<!-- 지도가 표시될 div -->
+    <!-- 지도 위에 표시될 드롭다운 -->
+    <div id="map" style="width:100%;height:500px;">
+        <div class = "dropdown">
+            <button class = "btn btn-secondary dropdown-toggle" data-toggle="dropdown" style="color:white;">완전폐쇄형</button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'smoking:fullclose' %}">완전폐쇄형</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+              <a class="dropdown-item" href="{% url 'smoking:fullopen' %}">완전개방형</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+              <a class="dropdown-item" href="{% url 'smoking:littleopen' %}">부분개방형</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+              <a class="dropdown-item" href="{% url 'smoking:etc' %}">기타</a>
+            </div>
+        </div>
+    </div>
+
+<!-- 현재 내 위치 찾기-->
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 4 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인합니다
+if (navigator.geolocation) {
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition, message);
+     });
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+        message = 'geolocation을 사용할수 없습니다'
+
+    displayMarker(locPosition, message);
+}
+
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker(locPosition, message) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: locPosition
+    });
+    var iwContent = '<div style="padding:5px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;내위치</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwPosition = new kakao.maps.LatLng(37.517992740481354, 126.91623783861414); //인포윈도우 표시 위치입니다
+
+    var infowindow = new kakao.maps.InfoWindow({
+    position : iwPosition,
+    content : iwContent
+    });
+
+    // 인포윈도우를 마커위에 표시합니다
+    infowindow.open(map, marker);
+
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);
+}
+
+// 완전폐쇄형,
+var positions = [
+    {
+        title: '서울시 강북구 오패산로 406 강북경찰서', // 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울시 강북구 오패산로 406 강북경찰서<br>완전폐쇄형<br><a href="http://kko.to/7qIMu6ffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.637523692066544, 127.02732741354987), // 3 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '서울 강북구 4.19로 107 미즐 카페 엠', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울 강북구 4.19로 107 미즐 카페 엠<br>완전폐쇄형<br><a href="http://kko.to/L2y_Nwf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.64359042245172, 127.00379011744512), // 10 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: 'LG 사이언스파크 마곡중앙10로 10 건물 옥상', // 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">LG 사이언스파크 마곡중앙10로 10 건물 옥상<br>완전폐쇄형<br><a href="http://kko.to/sp6jdRffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56223714882841, 126.83006616426248), // 1 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: 'LG 사이언스파크 마곡중앙10로 70 E14동 1층 옆', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">LG 사이언스파크 마곡중앙10로 70 E14동 1층 옆<br>완전폐쇄형<br><a href="http://kko.to/GlWfKRffB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56307604474756, 126.8355225944892), // 2 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: 'LG 사이언스파크 마곡중앙10로 10 W5동 1층 옆', // 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">LG 사이언스파크 마곡중앙10로 10 W5동 1층 옆<br>완전폐쇄형<br><a href="http://kko.to/BM4rKLffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.562350460568815, 126.82898217325004), // 3 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: 'LG 사이언스파크마곡중앙10로 10 W6동 1층 옆', // 4
+        content: '<div style="padding:15px;width:350px;text-align: center;">LG 사이언스파크마곡중앙10로 10 W6동 1층 옆<br>완전폐쇄형<br><a href="http://kko.to/dMurKR4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56371127050343, 126.82919411545173), // 4 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '봉천로 209 롯데백화점관악점', // 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">봉천로 209 롯데백화점관악점<br>완전폐쇄형<br><a href="http://kko.to/DPZIpyf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.4906293538444, 126.92494614753024), // 1 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '관악로 145 관악구청 2층 테라스', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">관악로 145 관악구청 2층 테라스<br>완전폐쇄형<br><a href="http://kko.to/sKpVMm4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.478418813638996, 126.95151546790909), // 2 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '신림로3길 35 관악문화관도서관 2층 제1자료실', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">신림로3길 35 관악문화관도서관 2층 제1자료실<br>완전폐쇄형<br><a href="http://kko.to/9Xk1My44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.46786056484417, 126.94486698824892), // 6 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '건국대학교 상허연구관', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 상허연구관<br>부분개방형<br><a href="http://kko.to/Th79Hy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54425911296233, 127.0753791593365), // 6 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '회기로 47(청량리동) 1층', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 47(청량리동) 1층<br>완전폐쇄형<br><a href="http://kko.to/NulT_mf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59476490806057, 127.0429067667652), // 6 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '회기로 57(청량리동) 1층', // 7
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 57(청량리동) 1층<br>완전폐쇄형<br><a href="http://kko.to/qzhjVyf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59343334356837, 127.0438571413989), // 7 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '청계천로 447(신설동) 1층', // 28
+        content: '<div style="padding:15px;width:350px;text-align: center;">청계천로 447(신설동) 1층<br>완전폐쇄형<br><a href="http://kko.to/_uTq_mf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57116810855459, 127.02694657954746), // 28 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '망우로12길 6(휘경동) 1층', // 44
+        content: '<div style="padding:15px;width:350px;text-align: center;">망우로12길 6(휘경동) 1층<br>완전폐쇄형<br><a href="http://kko.to/wj_9Cm4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58884054794289, 127.0592953542939), // 44 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '동대문구민회관(장한로18길 82-9) 1층', // 67
+        content: '<div style="padding:15px;width:350px;text-align: center;">동대문구민회관(장한로18길 82-9) 1층<br>완전폐쇄형<br><a href="http://kko.to/q6CCCm4fo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.567305602153674, 127.07343001919091), // 67 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '장한로2길 33, 2층, 3층, 4층, 5층', // 75
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로2길 33, 2층, 3층, 4층, 5층<br>완전폐쇄형<br><a href="http://kko.to/NHJzBCf4M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56229301232554, 127.06720848499745), // 75 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '연희로248 서대문구청', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">연희로248 서대문구청<br>완전폐쇄형<br><a href="http://kko.to/-TeIMCffj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5792970142154, 126.93681781038116), // 2 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '경찰청 과학 수사 센터', // 7
+        content: '<div style="padding:15px;width:350px;text-align: center;">경찰청 과학 수사 센터<br>완전폐쇄형<br><a href="http://kko.to/ssmQMk44j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.563530762140466, 126.96746763342634), // 7 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: 'DNArohlab', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">DNArohlab<br>완전폐쇄형<br><a href="http://kko.to/OCIjTk44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56143458822918, 126.9407857928924), // 10 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '서울명지대학교우편취급국', // 14
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울명지대학교우편취급국<br>완전폐쇄형<br><a href="http://kko.to/HBKgTk44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58031848932519, 126.92345239186258), // 14 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '롯데월드몰', // 송파구 흡연구역 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">롯데월드몰<br>완전폐쇄형<br><a href="http://kko.to/_Bja6Ba40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.513637020852265, 127.1041094362017), // 송파구 흡연구역 1 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '가든파이브', // 송파구 흡연구역 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">가든파이브<br>완전폐쇄형<br><a href="http://kko.to/67R-wBa4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.47786294491957, 127.124655799749), // 송파구 흡연구역 3 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '서울스퀘어(서울역 8번 출구)', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울스퀘어(서울역 8번 출구)<br>완전폐쇄형<br><a href="http://kko.to/SnOhcmff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.555923385758994, 126.97365590403393), // 6 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '이마트 미아점 주차동 1층', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">이마트 미아점 주차동 1층<br>완전폐쇄형<br><a href="http://kko.to/55YCaLt4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.61096873705349, 127.02985749210316), // 10 좌표
+        category : '완전폐쇄형'
+    },
+];
+
+// 마커 이미지의 이미지 주소입니다
+var imageSrc = "https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png";
+
+for (var i = 0; i < positions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(32, 32);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng, // 마커를 표시할 위치
+        image : markerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: positions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+
+<!--    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다-->
+<!--    // 이벤트 리스너로는 클로저를 만들어 등록합니다-->
+<!--    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다-->
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+<!--    kakao.maps.event.addListener(marker, 'dbclick', makeOutListener(infowindow));-->
+
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+</script>
+
+</div>
+
+</div>
+
+
+{% endblock %}

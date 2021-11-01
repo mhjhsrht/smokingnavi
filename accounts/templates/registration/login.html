@@ -1,0 +1,70 @@
+{% extends "registration/accounts_base.html" %}
+{% block title %}- Login{% endblock %}
+
+{% block content %}
+<style>
+    .loginbox {
+        width: 70%;
+        text-align: center;
+        border: 1px solid #EAEAEA;
+        border-radius: 40px;
+        padding: 10%;
+        margin: 10% 15%;
+        background: #FDFFFF;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+        margin-top: auto;
+        margin-right: auto;
+        margin-left: auto;
+        width: 250px;
+    }
+
+/*색상 변경 코드 추가*/
+.btn-outline-success:active,
+.btn-outline-success:visited,
+.btn-outline-success:active:focus,
+.btn-outline-success:active:hover {
+    border-color: #57B59A;
+    background-color: #57B59A;
+    }
+:root {
+  --button-color: #ffffff;
+  --button-bg-color: #57B59A;
+  --button-hover-bg-color: #57B59A;
+}
+#button1:hover{
+    background: var(--button-bg-color);
+    color: var(--button-color);
+}
+</style>
+
+<div class="loginbox">
+    <div>
+        <h4>로그인</h4>
+    </div>
+    <br>
+    <form method="post" class="post-form" action="{% url 'accounts:login' %}">
+        {% csrf_token %}
+        {% include "registration/form_errors.html" %}
+
+        <div class="form-group" >
+            <label for="username">아이디 (닉네임)</label>
+            <input type="text" class="form-control" name="username" id="username"
+                   value="{{ form.username.value|default_if_none:'' }}">
+        </div>
+        <br/>
+
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password"
+                   value="{{ form.password.value|default_if_none:'' }}">
+        </div>
+        <br/><br/>
+
+        <button id="button1" type="submit" class="btn btn-outline-success">로그인</button>
+        <a href="{% url 'accounts:register' %}" class="btn btn-outline-success">회원가입</a>
+    </form>
+</div>
+{% endblock %}

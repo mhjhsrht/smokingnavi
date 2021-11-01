@@ -1,0 +1,255 @@
+{% extends 'smoking/graph_base.html' %}
+{% block content %}
+
+<style>
+.btn-group button {
+  color: white;
+  background-color: #57B59A;
+  border: none;
+  border-radius:0px;
+  text-decoration: none;
+  margin:5px;
+}
+
+.bigbox {text-align:center; position:sticky;z-index:999;}
+
+.wc {
+    border: 2px solid #D8D8D8;
+    border-radius:15px;
+    width:80%;
+    height:80%;
+    margin : 10px auto;
+    text-align:center;
+}
+
+.wcimg {width : 80%;}
+
+h5 {text-align:center;}
+
+ul.tabs, ul.tabs2{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+ul.tabs li, ul.tabs2 li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+ul.tabs li.current, ul.tabs2 li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content, .tab2-content{
+	display: none;
+	background: #ededed;
+	padding: 15px;
+}
+
+.tab-content.current, .tab2-content.current{
+	display: inherit;
+}
+</style>
+
+<head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/></head>
+    {% if request.user.is_staff %}
+    <i class="fas fa-redo" style="float:right;" onclick="alert('개발 중');">  최신 데이터 업데이트</i>
+    {% endif %}<br/>
+
+<div class="bigbox">
+    <div class="btn-group">
+        <a href="#smoking rate"><button type="button" class="btn btn-dark"><strong>흡연율</strong></button></a>
+        <a href="#smoking amount"><button type="button" class="btn btn-dark"><strong>흡연량</strong></button></a>
+        <a href="#smoking crackdown"><button type="button" class="btn btn-dark"><strong>흡연 단속</strong></button></a>
+        <a href="#smoking complaints"><button type="button" class="btn btn-dark"><strong>흡연 민원</strong></button></a>
+        <a href="#smoking etc"><button type="button" class="btn btn-dark"><strong>기타</strong></button></a>
+    </div>
+</div>
+    <br/><br/><br/>
+<a id="smoking rate">
+  <div id="container" style ="width:100%;">
+      {#연령별 흡연율#}
+    <h5>연령별 흡연율 (2019)</h5>
+    <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+    <iframe src="../static/charts/age_data(2).html" width="100%" height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+  </div>
+<br/><br/>
+  <div id="container1" style ="width:100%;">
+      {#남성 흡연율#}
+      <div id="container1-1" style="float:left;">
+          <h5>남성 흡연율 (2018)</h5>
+        <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+        <iframe src="../static/charts/male_age_data(2).html" width="500" height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+
+      {#여성 흡연율#}
+      <div id="container1-2">
+       <h5>여성 흡연율 (2018)</h5>
+        <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+        <iframe src="../static/charts/female_age_data(2).html" width="500" height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+  </div>
+
+  <div id="container2" style ="width:100%;">
+   <h5>자치구별 흡연율 (2019)</h5>
+    <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+        <iframe src="../static/charts/borough_bar(3).html" width="100%"  height="1000" frameborder="0" framespacing="0" marginheight="0" marginwidth="50%" scrolling="no" vspace="0"></iframe>
+  </div>
+</a>
+</div>
+<br/><br/>
+<a id="smoking amount">
+    {#2019 하루 기준 평균 흡연량#}
+    <div id="container3-1" style ="width:100%;">
+      <h5>남성 하루 흡연량 (2019)</h5>
+        <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+        <iframe src="../static/charts/male_age_amount.html" width="100%" height="700" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+    {#2019 여성 흡연량#}
+      <div id="container3-2">
+       <h5>여성 하루 흡연량 (2019)</h5>
+        <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.open.go.kr/com/main/mainView.do" style="color: blue">정보 공개 포털</a>의 자료를 기반으로 작성되었습니다.</p>
+        <iframe src="../static/charts/female_age_amount.html" width="100%" height="700" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+</a>
+
+<a id="smoking crackdown">
+    <div class="tabbar">
+        <ul class="tabs">
+            <li class="tab-link current" data-tab="tab-1">2020</li>
+            <li class="tab-link" data-tab="tab-2">2019</li>
+            <li class="tab-link" data-tab="tab-3">2018</li>
+            <li class="tab-link" data-tab="tab-4">2017</li>
+            <li class="tab-link" data-tab="tab-5">2016</li>
+        </ul>
+
+        <div id="tab-1" class="tab-content current">
+            <iframe src="../static/charts/smoking_cd_2020.html" width="100%" height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab-2" class="tab-content">
+            <iframe src="../static/charts/smoking_cd_2019.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab-3" class="tab-content">
+            <iframe src="../static/charts/smoking_cd_2018.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab-4" class="tab-content">
+            <iframe src="../static/charts/smoking_cd_2017.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab-5" class="tab-content">
+            <iframe src="../static/charts/smoking_cd_2016.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+
+        $('ul.tabs li').click(function(){
+            var tab_id = $(this).attr('data-tab');
+
+            $('ul.tabs li').removeClass('current');
+            $('.tab-content').removeClass('current');
+
+            $(this).addClass('current');
+            $("#"+tab_id).addClass('current');
+        })
+    })
+    </script>
+</a>
+<br/><br/>
+<a id="smoking complaints">
+    <div class="tabbar2">
+        <ul class="tabs2">
+            <li class="tab2-link current" data-tab="tab2-1">2020</li>
+            <li class="tab2-link" data-tab="tab2-2">2019</li>
+            <li class="tab2-link" data-tab="tab2-3">2018</li>
+            <li class="tab2-link" data-tab="tab2-4">2017</li>
+            <li class="tab2-link" data-tab="tab2-5">2016</li>
+        </ul>
+
+        <div id="tab2-1" class="tab2-content current">
+            <iframe src="../static/charts/smoking_cp_2020.html" width="100%" height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab2-2" class="tab2-content">
+            <iframe src="../static/charts/smoking_cp_2019.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab2-3" class="tab2-content">
+            <iframe src="../static/charts/smoking_cp_2018.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab2-4" class="tab2-content">
+            <iframe src="../static/charts/smoking_cp_2017.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+        <div id="tab2-5" class="tab2-content">
+            <iframe src="../static/charts/smoking_cp_2016.html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+        </div>
+</div>
+    <script>
+        $(document).ready(function(){
+
+        $('ul.tabs2 li').click(function(){
+            var tab2_id = $(this).attr('data-tab');
+
+            $('ul.tabs2 li').removeClass('current');
+            $('.tab2-content').removeClass('current');
+
+            $(this).addClass('current');
+            $("#"+tab2_id).addClass('current');
+        })
+    })
+    </script>
+</a>
+<br/><br/>
+<a id="smoking etc">
+    {#담배 값#}
+    <div id="container4" style ="width:100%;">
+        <h5>담배값 및 담배 판매량 추이</h5>
+    <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.moef.go.kr/nw/nes/detailNesDtaView.do?menuNo=4010100&searchNttId1=MOSF_000000000053516&searchBbsId1=MOSFBBS_000000000028" style="color: blue">
+        기획재정부</a>의 자료를 기반으로 작성되었습니다.
+    <iframe src="../static/charts/cigarette_price(2).html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" scrolling="no" vspace="0"></iframe>
+  </div>
+<br/><br/>
+{#워드클라우드#}
+  <div id="container5">
+       <h5>흡연 관련 워드 클라우드</h5>
+      <div class="infomessage" style="text-align:center;">
+          <sup>최근 네이버 기사를 크롤링하여 단어 출현 빈도를 분석 후 만든 <strong style="color:blue;">워드 클라우드</strong>입니다.</sup>
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">흡연구역</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131795979-f80bf4ff-2f49-4758-9b7b-c0aa2d496cb0.png">
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">흡연</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131796324-1f318dda-7702-46bb-9f2b-aafcb509de18.png">
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">담배</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131796421-33c88ec7-0561-4641-8689-6eb7d64c95ff.png">
+      </div>
+  </div>
+<br/><br/>
+       {#청소년 흡연율 및 간접흡연 노출률#}
+    <div id="container6">
+      <h5>청소년 흡연율 및 간접흡연 노출률</h5>
+       <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://data.seoul.go.kr/" style="color: blue">
+      서울 열린데이터 광장</a>의 자료를 기반으로 작성되었습니다.</p>
+
+        <div id="container6-1" style="float:left;">
+      <img style="width:490px; height:400px;" src="https://user-images.githubusercontent.com/73293902/137081472-491e9252-4ed8-48d8-ab9d-05b8532ae711.png">
+        </div>
+      <div id="container6-2">
+            <iframe src="../static/charts/youth.html" width="550" height="400" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+<br/><br/>
+      <div id="container6-3" style="float:left;">
+      <img style="width:490px; height:400px;" src="https://user-images.githubusercontent.com/73293902/137081482-d70af5cc-40a6-49a5-8abe-0cf85b40f091.png">
+      </div>
+      <div id="container6-4">
+        <iframe src="../static/charts/second_youth.html"  width="550" height="400" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+    </div>
+</div>
+</a>
+{% endblock %}

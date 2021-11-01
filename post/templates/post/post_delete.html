@@ -1,0 +1,22 @@
+{% extends "post/post_base.html" %}
+
+{% block content %}
+<style>
+.container h1 {
+    font-size: 30px;
+    font-weight: bolder;
+    text-align: center;
+    color: #57B59A;
+}
+</style>
+
+<body>
+    <br/>
+    <div class="container">
+        <h1>글이 삭제되었습니다.</h1>
+        <a href="/">
+            <a class="btn btn-outline-primary" href="{% url 'post:post_list' %}" style ="float:left; margin-top:25px;">목록 보기</a>
+        </a>
+    </div>
+</body>
+{% endblock %}

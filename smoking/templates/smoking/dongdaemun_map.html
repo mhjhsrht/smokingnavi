@@ -1,0 +1,1250 @@
+{% extends 'smoking/location_base.html' %}
+{% block title %}- 위치/유형 페이지{% endblock %}
+
+{% block content %}
+
+<style>
+     .dropdown-menu {
+        max-height: 400px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    div#map {margin:0px auto}
+
+     .box {
+        position : absolute;
+        top : 180px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+    .dropdown>a {
+    background-color: lightgray;
+}
+
+.dropdown>a:hover {
+    background-color: #57B59A;
+}
+    #map{position:relative;overflow:hidden;}
+.dropdown, .dropdown *{margin:0;color:#000;}
+.dropdown {position:absolute;top:200px;left:28px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+.typebox {width: 144px; position:absolute; top:10px; right:10px; z-index:10; text-align:center; background-color:#fff; padding : 7px;
+          border-radius:10px;}
+.smalltype {margin-bottom:3px;}
+
+    @media screen and (max-width: 936px) {
+        .container {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .box2 > .table {
+            scroll-behavior: auto;
+            font-size: x-small;
+            white-space: nowrap;
+        }
+
+        .dropdown {position:absolute;top:170px;left:20px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+        .box {
+        position : absolute;
+        top : 220px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+
+    }
+</style>
+
+<div class="container" style="margin-top: 10px">
+
+   <div class = "dropdown">
+        <button style="color:white;" class = "btn btn-secondary dropdown-toggle" data-toggle="dropdown">구 선택</button>
+            <a class="dropdown-item" href="{% url 'smoking:gangnam_map' %}" style="height:25px;font-size:13px;">강남구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangdong_map' %}" style="height:25px;font-size:13px;">강동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangbuk_map' %}" style="height:25px;font-size:13px;">강북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangseo_map' %}" style="height:25px;font-size:13px;">강서구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwanak_map' %}" style="height:25px;font-size:13px">관악구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwangjin_map' %}" style="height:25px;font-size:13px">광진구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:guro_map' %}" style="height:25px;font-size:13px">구로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:geumcheon_map' %}" style="height:25px;font-size:13px">금천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:nowon_map' %}" style="height:25px;font-size:13px">노원구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dobong_map' %}" style="height:25px;font-size:13px">도봉구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongdaemun_map' %}" style="height:25px;font-size:13px">동대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongjak_map' %}" style="height:25px;font-size:13px">동작구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:mapo_map' %}" style="height:25px;font-size:13px">마포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seodaemun_map' %}" style="height:25px;font-size:13px">서대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seocho_map' %}" style="height:25px;font-size:13px">서초구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongdong_map' %}" style="height:25px;font-size:13px">성동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongbuk_map' %}" style="height:25px;font-size:13px">성북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:songpa_map' %}" style="height:25px;font-size:13px">송파구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yangcheon_map' %}" style="height:25px;font-size:13px">양천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yeongdeungpo_map' %}" style="height:25px;font-size:13px">영등포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yongsan_map' %}" style="height:25px;font-size:13px">용산구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:eunpyeong_map' %}" style="height:25px;font-size:13px">은평구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jongro_map' %}" style="height:25px;font-size:13px">종로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jung_map' %}" style="height:25px;font-size:13px">중구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jungrang_map' %}" style="height:25px;font-size:13px">중랑구</a>
+       </div>
+
+</div>
+
+
+<div class="box" align="center">
+    <br/>
+    <h4><strong>동대문구 흡연구역 상세 지도</strong></h4>
+    <sub><strong style="color:blue">정보공개포털</strong>과 <strong style="color:blue">공공데이터포털</strong>의 데이터를 기반으로 만들어졌습니다.</sub><br/><br/>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=541b6d15b257b828a3da0c50a02d541e"></script>
+
+<div id="map" style="width:100%;height:600px;">
+    <div class="typebox">
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png">완전폐쇄형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png">완전개방형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png">부분개방형 </div>
+        <div class="smalltype2"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042829-0ce402dd-d54a-4775-924c-4d1e74724099.png">&nbsp&nbsp&nbsp&nbsp&nbsp기타&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </div>
+    </div>
+</div>
+<br/><br/>
+
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+
+mapOption = {
+    center: new kakao.maps.LatLng(37.58387856577985, 127.05882440090234), // 지도의 중심좌표
+    level: 6 // 지도의 확대 레벨
+};
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+var fullclosepositions = [
+    {
+        title: '회기로 47(청량리동) 1층', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 47(청량리동) 1층<br>완전폐쇄형<br><a href="http://kko.to/NulT_mf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59476490806057, 127.0429067667652), // 6 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '회기로 57(청량리동) 1층', // 7
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 57(청량리동) 1층<br>완전폐쇄형<br><a href="http://kko.to/qzhjVyf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59343334356837, 127.0438571413989), // 7 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '청계천로 447(신설동) 1층', // 27
+        content: '<div style="padding:15px;width:350px;text-align: center;">청계천로 447(신설동) 1층<br>완전폐쇄형<br><a href="http://kko.to/_uTq_mf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57116810855459, 127.02694657954746), // 27 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '망우로12길 6(휘경동) 1층', // 43
+        content: '<div style="padding:15px;width:350px;text-align: center;">망우로12길 6(휘경동) 1층<br>완전폐쇄형<br><a href="http://kko.to/wj_9Cm4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58884054794289, 127.0592953542939), // 43 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '동대문구민회관(장한로18길 82-9) 1층', // 66
+        content: '<div style="padding:15px;width:350px;text-align: center;">동대문구민회관(장한로18길 82-9) 1층<br>완전폐쇄형<br><a href="http://kko.to/q6CCCm4fo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.567305602153674, 127.07343001919091), // 66 좌표
+        category : '완전폐쇄형'
+    },
+    {
+        title: '장한로2길 33, 2층, 3층, 4층, 5층', // 74
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로2길 33, 2층, 3층, 4층, 5층<br>완전폐쇄형<br><a href="http://kko.to/NHJzBCf4M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56229301232554, 127.06720848499745), // 74 좌표
+        category : '완전폐쇄형'
+    },
+];
+
+var fullopenpositions = [
+    {
+        title: '송화빌딩 옥상', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">송화빌딩 옥상<br>완전개방형<br><a href="http://kko.to/cbO2Jm4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.563852433470835, 127.05734572117952), // 2 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '한천로11길 6(답십리동) 옥상', // 4
+        content: '<div style="padding:15px;width:350px;text-align: center;">한천로11길 6(답십리동) 옥상<br>완전개방형<br><a href="http://kko.to/SkCRGy4fH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56737527938642, 127.06190154530003), // 4 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '홍릉로 58(청량리동) 1층', // 5
+        content: '<div style="padding:15px;width:350px;text-align: center;">홍릉로 58(청량리동) 1층<br>완전개방형<br><a href="http://kko.to/Hd5o_yffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58552262071247, 127.04388363505666), // 5 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '왕산로 61(용두동) 옥상', // 8
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 61(용두동) 옥상<br>완전개방형<br><a href="http://kko.to/8EjDVm4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57804195866203, 127.0300113205682), // 8 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '왕산로 21(신설동) 옥상', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 21(신설동) 옥상<br>완전개방형<br><a href="http://kko.to/CLB9Vy44T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57684688996491, 127.02577411629646), // 10 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '이문로 156(이문동) 옥상', // 18
+        content: '<div style="padding:15px;width:350px;text-align: center;">이문로 156(이문동) 옥상<br>완전개방형<br><a href="http://kko.to/f3csVy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.600450561372185, 127.06223752143538), // 18 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '이문로 199(이문동) 1층', // 20
+        content: '<div style="padding:15px;width:350px;text-align: center;">이문로 199(이문동) 1층<br>완전개방형<br><a href="http://kko.to/IhG2Vy4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.60427999030463, 127.06181886558862), // 20 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '장한로 40(장안동) 옥상', // 21
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 40(장안동) 옥상<br>완전개방형<br><a href="http://kko.to/zH3q_yf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56462892278295, 127.0670719291278), // 21 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '난계로 250(신설동) 옥상', // 24
+        content: '<div style="padding:15px;width:350px;text-align: center;">난계로 250(신설동) 옥상<br>완전개방형<br><a href="http://kko.to/RF5yVmf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57373889580631, 127.02368731612816), // 24 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '난계로30길 27(신설동)옥상', // 25
+        content: '<div style="padding:15px;width:350px;text-align: center;">난계로30길 27(신설동)옥상<br>완전개방형<br><a href="http://kko.to/p9PCVyf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.574220658997895, 127.02499211900864), // 25 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '청계천로 439(신설동) 1층', // 26
+        content: '<div style="padding:15px;width:350px;text-align: center;">청계천로 439(신설동) 1층<br>완전개방형<br><a href="http://kko.to/wY3H6y44o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57141154100537, 127.02621937326411), // 26 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '왕산로 4(신설동) 옥상', // 28
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 4(신설동) 옥상<br>완전개방형<br><a href="http://kko.to/yU0SVmf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57562192204113, 127.02394828150376), // 28 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '왕산로6(신설동) 옥상, 1층', // 30
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로6(신설동) 옥상, 1층<br>완전개방형<br><a href="http://kko.to/_qD3myffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57577498489903, 127.02446623933967), // 30 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '답십리로 303(장안동) 옥상', // 31
+        content: '<div style="padding:15px;width:350px;text-align: center;">답십리로 303(장안동) 옥상<br>완전개방형<br><a href="http://kko.to/hDkhymf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57239809464499, 127.074043463339), // 31 좌표
+        category : '완전개방형'
+    },
+];
+
+var littleopenpositions = [
+    {
+        title: '클래식타워 10층', // 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">클래식타워 10층<br>부분개방형<br><a href="http://kko.to/zdAcGmf4p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.565853915298426, 127.0546675038096), // 1 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 329(답십리동) 1층', // 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 329(답십리동) 1층<br>부분개방형<br><a href="http://kko.to/45rRGm4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5644114059699, 127.05661043477686), // 3 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 25(신설동) 옥상, 1층', // 9
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 25(신설동) 옥상, 1층<br>부분개방형<br><a href="http://kko.to/VlZ-Vmff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57682879544106, 127.0261137271841), // 9 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 19(신설동) 옥상', // 11
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 19(신설동) 옥상<br>부분개방형<br><a href="http://kko.to/uMV9Vyf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.576718556674074, 127.02550520890239), // 11 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 15(신설동) 옥상', // 12
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 15(신설동) 옥상<br>부분개방형<br><a href="http://kko.to/TiWn_y4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.576538465576405, 127.02500138403123), // 12 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 4(신설동) 테라스', // 13
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 4(신설동) 테라스<br>부분개방형<br><a href="http://kko.to/yU0SVmf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57562190766678, 127.02401903392511), // 13 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 117(제기동) 옥상', // 14
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 117(제기동) 옥상<br>부분개방형<br><a href="http://kko.to/dxnP_m44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57851540824533, 127.03648985325285), // 14 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 127(제기동) 옥상', // 15
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 127(제기동) 옥상<br>부분개방형<br><a href="http://kko.to/QbtE_mf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57845201213149, 127.0375313374102), // 15 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로 91(장안동) 1층', // 16
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 91(장안동) 1층<br>부분개방형<br><a href="http://kko.to/SGLi_m44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56916185026775, 127.06937949325184), // 16 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한천로14길 87(장안동) 1층', // 17
+        content: '<div style="padding:15px;width:350px;text-align: center;">한천로14길 87(장안동) 1층<br>부분개방형<br><a href="http://kko.to/8_KO_yff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5663292629167, 127.06757997799723), // 17 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '이문로 156(이문동) 1층', // 19
+        content: '<div style="padding:15px;width:350px;text-align: center;">이문로 156(이문동) 1층<br>부분개방형<br><a href="http://kko.to/f3csVy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.600450561372185, 127.06223752143538), // 19 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '청계천로 447(신설동) 1층', // 22
+        content: '<div style="padding:15px;width:350px;text-align: center;">청계천로 447(신설동) 1층<br>부분개방형<br><a href="http://kko.to/_uTq_mf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57110276634984, 127.02703428371221), // 22 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '난계로28길 23(신설동) 3층', // 23
+        content: '<div style="padding:15px;width:350px;text-align: center;">난계로28길 23(신설동) 3층<br>부분개방형<br><a href="http://kko.to/AbMLVy4fH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.572889525943175, 127.02457849510432), // 23 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 26(신설동) 옥상', // 29
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 26(신설동) 옥상<br>부분개방형<br><a href="http://kko.to/dLWimm44j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57398616093021, 127.02609858437725), // 29 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '이문로 197(이문동) 1층', // 32
+        content: '<div style="padding:15px;width:350px;text-align: center;">이문로 197(이문동) 1층<br><br><a href="http://kko.to/7y02myffp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.60411105177729, 127.06182438813939), // 32 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '답십리로 294(장안동) 2층', // 33
+        content: '<div style="padding:15px;width:350px;text-align: center;">답십리로 294(장안동) 2층<br>부분개방형<br><a href="http://kko.to/Hso7my440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57202710756027, 127.0729620511584), // 33 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '답십리로92길 68(장안동) 1층', // 34
+        content: '<div style="padding:15px;width:350px;text-align: center;">답십리로92길 68(장안동) 1층<br>부분개방형<br><a href="http://kko.to/xLEumy44T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57435192873819, 127.05103144256348), // 34 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '회기로 123(회기동) 옥상', // 35
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 123(회기동) 옥상<br>부분개방형<br><a href="http://kko.to/ihUvym44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.591635527427265, 127.05034688867711), // 35 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '사가정로 229(장안동) 1층', // 36
+        content: '<div style="padding:15px;width:350px;text-align: center;">사가정로 229(장안동) 1층<br>부분개방형<br><a href="http://kko.to/L84AyyffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.578959475391926, 127.07054614444665), // 36 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '회기로 66(청량리동) 1층', // 37
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 66(청량리동) 1층<br>부분개방형<br><a href="http://kko.to/M0T_ymff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59144845077234, 127.04507317592622), // 37 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한천로 272(휘경동) 1층', // 38
+        content: '<div style="padding:15px;width:350px;text-align: center;">한천로 272(휘경동) 1층<br>부분개방형<br><a href="http://kko.to/jXcwyyf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.585240533773465, 127.06862169728748), // 38 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '답십리로64길 103(장안동) 1층', // 39
+        content: '<div style="padding:15px;width:350px;text-align: center;">답십리로64길 103(장안동) 1층<br>부분개방형<br><a href="http://kko.to/4lJ6yy44j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.568513273056894, 127.06518225731622), // 39 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로 47(장안동) 1층', // 40
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 47(장안동) 1층<br>부분개방형<br><a href="http://kko.to/azI0Cm44T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.565367825857734, 127.06691978734223), // 40 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '이문로 136(이문동) 1층', // 41
+        content: '<div style="padding:15px;width:350px;text-align: center;">이문로 136(이문동) 1층<br>부분개방형<br><a href="http://kko.to/uIDzkyffM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.59824116630861, 127.06169496901904), // 41 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '망우로 60(휘경동) 옥상', // 42
+        content: '<div style="padding:15px;width:350px;text-align: center;">망우로 60(휘경동) 옥상<br>부분개방형<br><a href="http://kko.to/8ARzCmf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58920507914763, 127.0600287717124), // 42 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '사가정로 272(장안동) 1층', // 44
+        content: '<div style="padding:15px;width:350px;text-align: center;">사가정로 272(장안동) 1층<br>부분개방형<br><a href="http://kko.to/61Znky44o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57964596375414, 127.07504122727225), // 44 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '사가정로 203(전농동) 1층', // 45
+        content: '<div style="padding:15px;width:350px;text-align: center;">사가정로 203(전농동) 1층<br>부분개방형<br><a href="http://kko.to/TLPZCyf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57885088594792, 127.06749789636619), // 45 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 395-2(장안동) 옥상', // 46
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 395-2(장안동) 옥상<br>부분개방형<br><a href="http://kko.to/uptgCmf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56204072858277, 127.06313648869616), // 46 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 393(장안동) 옥상', // 47
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 393(장안동) 옥상<br>부분개방형<br><a href="http://kko.to/3ZRECyf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56211300440554, 127.06276870356199), // 47 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 381(장안동) 옥상', // 48
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 381(장안동) 옥상<br>부분개방형<br><a href="http://kko.to/2e3Wkmf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.562311956940206, 127.06137388106764), // 48 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 357(장안동) 1층', // 49
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 357(장안동) 1층<br>부분개방형<br><a href="http://kko.to/eUcFkyf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.562736656527385, 127.05895774319755), // 49 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '청계천로 439(용두동) 1층', // 50
+        content: '<div style="padding:15px;width:350px;text-align: center;">청계천로 439(용두동) 1층<br>부분개방형<br><a href="http://kko.to/wY3H6y44o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.571407057360034, 127.02612315381627), // 50 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 6(신설동) 1층, 옥상', // 51
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 6(신설동) 1층, 옥상<br>부분개방형<br><a href="http://kko.to/_qD3myffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57580652087775, 127.02446058944942), // 51 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '황물로 60(답십리동) 옥상', // 52
+        content: '<div style="padding:15px;width:350px;text-align: center;">황물로 60(답십리동) 옥상<br>부분개방형<br><a href="http://kko.to/rTthkm44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57215263660389, 127.04771322226779), // 52 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로10길 9(장안동) 1층', // 53
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로10길 9(장안동) 1층<br>부분개방형<br><a href="http://kko.to/0BJbCmffp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.565434841498025, 127.06789892735239), // 53 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로 120(장안동) 옥상', // 54
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 120(장안동) 옥상<br>부분개방형<br><a href="http://kko.to/1Hi5km4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.571073094025095, 127.07125750600784), // 54 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한천로 77(답십리동) 테라스 2층, 4층, 5층, 6층', // 55
+        content: '<div style="padding:15px;width:350px;text-align: center;">한천로 77(답십리동) 테라스 2층, 4층, 5층, 6층<br>부분개방형<br><a href="http://kko.to/B_guCm4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.568669764195704, 127.06321565934682), // 55 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장안벚꽃로 279(휘경동) 1층', // 56
+        content: '<div style="padding:15px;width:350px;text-align: center;">장안벚꽃로 279(휘경동) 1층<br>부분개방형<br><a href="http://kko.to/0TiXkmf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58373812759172, 127.0723932464188), // 56 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 71(용두동) 옥상', // 57
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 71(용두동) 옥상<br>부분개방형<br><a href="http://kko.to/T_Cvky4fp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57821959156524, 127.03121988526212), // 57 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로 22(장안동) 1층', // 58
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 22(장안동) 1층<br>부분개방형<br><a href="http://kko.to/c61dCmff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56322165640816, 127.06611425339621), // 58 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 433(장안동) 1층', // 59
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 433(장안동) 1층<br>부분개방형<br><a href="http://kko.to/pcuIkyff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56147092424455, 127.06708324583143), // 59 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 437(장안동) 옥상', // 60
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 437(장안동) 옥상<br>부분개방형<br><a href="http://kko.to/kIGGCyffT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56148861802507, 127.06765483320056), // 60 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '홍릉로 28(청량리동) 옥상', // 61
+        content: '<div style="padding:15px;width:350px;text-align: center;">홍릉로 28(청량리동) 옥상<br>부분개방형<br><a href="http://kko.to/-jnVCy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.582821596968465, 127.04467455298617), // 61 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로2길 62(장안동) 1층', // 62
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로2길 62(장안동) 1층<br>부분개방형<br><a href="http://kko.to/RGq6kmf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56156691971035, 127.06858300127703), // 62 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '회기로 37(청량리동) 1층', // 63
+        content: '<div style="padding:15px;width:350px;text-align: center;">회기로 37(청량리동) 1층<br>부분개방형<br><a href="http://kko.to/Lm8RCm4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.592533292834794, 127.04124667352838), // 63 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 53(용두동) 1층', // 64
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 53(용두동) 1층<br>부분개방형<br><a href="http://kko.to/sS1yky44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57769077677071, 127.02919042878092), // 64 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '동대문구청(천호대로 145) 1층, 5층', // 65
+        content: '<div style="padding:15px;width:350px;text-align: center;">동대문구청(천호대로 145) 1층, 5층<br>부분개방형<br><a href="http://kko.to/IIiCkmf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57441708516768, 127.03974524253744), // 65 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '동대문소방서(장한로 34) 1층', // 67
+        content: '<div style="padding:15px;width:350px;text-align: center;">동대문소방서(장한로 34) 1층<br>부분개방형<br><a href="http://kko.to/VYFooCf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56397367601542, 127.06666953053376), // 67 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '동대문우체국(천호대로 4) 1층', // 68
+        content: '<div style="padding:15px;width:350px;text-align: center;">동대문우체국(천호대로 4) 1층<br>부분개방형<br><a href="http://kko.to/4QopBCffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.574914633287875, 127.02398767598498), // 68 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '서울명병원(고산자로 421) 옥상', // 69
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울명병원(고산자로 421) 옥상<br>부분개방형<br><a href="http://kko.to/NpwpBk4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57743377044661, 127.03790157801376), // 69 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '삼육서울병원(망우로 82) 1층', // 70
+        content: '<div style="padding:15px;width:350px;text-align: center;">삼육서울병원(망우로 82) 1층<br>부분개방형<br><a href="http://kko.to/ICWHoC4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.58799712902393, 127.06543418104376), // 70 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한빛로 12(신설동) 1층', // 71
+        content: '<div style="padding:15px;width:350px;text-align: center;">한빛로 12(신설동) 1층<br>부분개방형<br><a href="http://kko.to/iZEjokf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57677049434025, 127.02489391626905), // 71 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '래미안엘파인아파트 한천로37길 33(답십리동) 1층', // 72
+        content: '<div style="padding:15px;width:350px;text-align: center;">래미안엘파인아파트 한천로37길 33(답십리동) 1층<br>부분개방형<br><a href="http://kko.to/eggaoCf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.57589461103722, 127.06529623480142), // 72 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '장한로 37(장안동) 1층', // 73
+        content: '<div style="padding:15px;width:350px;text-align: center;">장한로 37(장안동) 1층<br>부분개방형<br><a href="http://kko.to/m1JaBkffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56462028236234, 127.06641826521823), // 73 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '왕산로 214 롯데백화점 1층, 3층, 7층 옥상', // 75
+        content: '<div style="padding:15px;width:350px;text-align: center;">왕산로 214 롯데백화점 1층, 3층, 7층 옥상<br>부분개방형<br><a href="http://kko.to/PGscBk440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.580806736486565, 127.04759138123907), // 75 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '천호대로 421 옥상', // 76
+        content: '<div style="padding:15px;width:350px;text-align: center;">천호대로 421 옥상<br>부분개방형<br><a href="http://kko.to/I2JZBkf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.56163376174662, 127.06591478049383), // 76 좌표
+        category : '부분개방형'
+    },
+];
+
+// 부분개방형 마커 이미지의 이미지 주소입니다
+var loimageSrc = "https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png";
+
+for (var i = 0; i < littleopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var lomarkerImage = new kakao.maps.MarkerImage(loimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: littleopenpositions[i].latlng, // 마커를 표시할 위치
+        image : lomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: littleopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+// ---------------------------------------------------------------------------------------------
+
+// 완전폐쇄형 마커 이미지의 이미지 주소입니다
+var fcimageSrc = "https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png";
+
+for (var i = 0; i < fullclosepositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(fcimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: fullclosepositions[i].latlng, // 마커를 표시할 위치
+        image : markerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: fullclosepositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+// ----------------------------------------------------------------------------------------
+
+// 완전개방형 마커 이미지의 이미지 주소입니다
+var foimageSrc = "https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png";
+
+for (var i = 0; i < fullopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var fomarkerImage = new kakao.maps.MarkerImage(foimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: fullopenpositions[i].latlng, // 마커를 표시할 위치
+        image : fomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: fullopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+</script>
+<!--    box2-->
+    <br/>
+<div class="box2" align="center" style="width:100%; height:350px; overflow:auto">
+
+        <table class="table">
+            <thead class="thead" style="color:#4374D9">
+                <tr>
+                    <th scope="col">자치구</th>
+                    <th scope="col">흡연구역 유형</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">길찾기</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>클래식타워 10층</td>
+                <td><a href="http://kko.to/zdAcGmf4p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>송화빌딩 옥상</td>
+                <td><a href="http://kko.to/cbO2Jm4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 329(답십리동) 1층</td>
+                <td><a href="http://kko.to/45rRGm4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>한천로11길 6(답십리동) 옥상</td>
+                <td><a href="http://kko.to/SkCRGy4fH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>홍릉로 58(청량리동) 1층</td>
+                <td><a href="http://kko.to/Hd5o_yffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            5#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>회기로 47(청량리동) 1층</td>
+                <td><a href="http://kko.to/NulT_mf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>회기로 57(청량리동) 1층</td>
+                <td><a href="http://kko.to/qzhjVyf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>왕산로 61(용두동) 옥상</td>
+                <td><a href="http://kko.to/8EjDVm4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 25(신설동) 옥상, 1층</td>
+                <td><a href="http://kko.to/VlZ-Vmff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>왕산로 21(신설동) 옥상</td>
+                <td><a href="http://kko.to/CLB9Vy44T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#10#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 19(신설동) 옥상</td>
+                <td><a href="http://kko.to/uMV9Vyf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 15(신설동) 옥상</td>
+                <td><a href="http://kko.to/TiWn_y4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 4(신설동) 테라스</td>
+                <td><a href="http://kko.to/yU0SVmf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 117(제기동) 옥상</td>
+                <td><a href="http://kko.to/dxnP_m44M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 127(제기동) 옥상</td>
+                <td><a href="http://kko.to/QbtE_mf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            15#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로 91(장안동) 1층</td>
+                <td><a href="http://kko.to/SGLi_m44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>한천로14길 87(장안동) 1층</td>
+                <td><a href="http://kko.to/8_KO_yff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>이문로 156(이문동) 옥상</td>
+                <td><a href="http://kko.to/f3csVy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>이문로 156(이문동) 1층</td>
+                <td><a href="http://kko.to/f3csVy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>이문로 199(이문동) 1층</td>
+                <td><a href="http://kko.to/IhG2Vy4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            20#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>장한로 40(장안동) 옥상</td>
+                <td><a href="http://kko.to/zH3q_yf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>청계천로 447(신설동) 1층</td>
+                <td><a href="http://kko.to/_uTq_mf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>난계로28길 23(신설동) 3층</td>
+                <td><a href="http://kko.to/AbMLVy4fH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>난계로 250(신설동) 옥상</td>
+                <td><a href="http://kko.to/RF5yVmf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>난계로30길 27(신설동)옥상</td>
+                <td><a href="http://kko.to/p9PCVyf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            25#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>청계천로 439(신설동) 1층</td>
+                <td><a href="http://kko.to/wY3H6y44o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>청계천로 447(신설동) 1층</td>
+                <td><a href="http://kko.to/_uTq_mf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>왕산로 4(신설동) 옥상</td>
+                <td><a href="http://kko.to/yU0SVmf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 26(신설동) 옥상</td>
+                <td><a href="http://kko.to/dLWimm44j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>왕산로6(신설동) 옥상, 1층</td>
+                <td><a href="http://kko.to/_qD3myffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            30#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>답십리로 303(장안동) 옥상</td>
+                <td><a href="http://kko.to/hDkhymf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>이문로 197(이문동) 1층</td>
+                <td><a href="http://kko.to/7y02myffp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>답십리로 294(장안동) 2층</td>
+                <td><a href="http://kko.to/Hso7my440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>답십리로92길 68(장안동) 1층</td>
+                <td><a href="http://kko.to/xLEumy44T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>회기로 123(회기동) 옥상</td>
+                <td><a href="http://kko.to/ihUvym44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            35#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>사가정로 229(장안동) 1층</td>
+                <td><a href="http://kko.to/L84AyyffH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>회기로 66(청량리동) 1층</td>
+                <td><a href="http://kko.to/M0T_ymff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>한천로 272(휘경동) 1층</td>
+                <td><a href="http://kko.to/jXcwyyf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>답십리로64길 103(장안동) 1층</td>
+                <td><a href="http://kko.to/4lJ6yy44j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로 47(장안동) 1층</td>
+                <td><a href="http://kko.to/azI0Cm44T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            40#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>이문로 136(이문동) 1층</td>
+                <td><a href="http://kko.to/uIDzkyffM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>망우로 60(휘경동) 옥상</td>
+                <td><a href="http://kko.to/8ARzCmf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>망우로12길 6(휘경동) 1층</td>
+                <td><a href="http://kko.to/wj_9Cm4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>사가정로 272(장안동) 1층</td>
+                <td><a href="http://kko.to/61Znky44o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>사가정로 203(전농동) 1층</td>
+                <td><a href="http://kko.to/TLPZCyf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            45#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전개방형</td>
+                <td>천호대로 395-2(장안동) 옥상</td>
+                <td><a href="http://kko.to/uptgCmf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 393(장안동) 옥상</td>
+                <td><a href="http://kko.to/3ZRECyf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 381(장안동) 옥상</td>
+                <td><a href="http://kko.to/2e3Wkmf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 357(장안동) 1층</td>
+                <td><a href="http://kko.to/eUcFkyf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>청계천로 439(용두동) 1층</td>
+                <td><a href="http://kko.to/wY3H6y44o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            50#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 6(신설동) 1층, 옥상</td>
+                <td><a href="http://kko.to/_qD3myffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>황물로 60(답십리동) 옥상</td>
+                <td><a href="http://kko.to/rTthkm44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로10길 9(장안동) 1층</td>
+                <td><a href="http://kko.to/0BJbCmffp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로 120(장안동) 옥상</td>
+                <td><a href="http://kko.to/1Hi5km4f0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>한천로 77(답십리동) 테라스 2층, 4층, 5층, 6층</td>
+                <td><a href="http://kko.to/B_guCm4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            55#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장안벚꽃로 279(휘경동) 1층</td>
+                <td><a href="http://kko.to/0TiXkmf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 71(용두동) 옥상</td>
+                <td><a href="http://kko.to/T_Cvky4fp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로 22(장안동) 1층</td>
+                <td><a href="http://kko.to/c61dCmff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 433(장안동) 1층</td>
+                <td><a href="http://kko.to/pcuIkyff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>천호대로 437(장안동) 옥상</td>
+                <td><a href="http://kko.to/kIGGCyffT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            60#}
+               <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>홍릉로 28(청량리동) 옥상</td>
+                <td><a href="http://kko.to/-jnVCy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로2길 62(장안동) 1층</td>
+                <td><a href="http://kko.to/RGq6kmf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>회기로 37(청량리동) 1층</td>
+                <td><a href="http://kko.to/Lm8RCm4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 53(용두동) 1층</td>
+                <td><a href="http://kko.to/sS1yky44M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>동대문구청(천호대로 145) 1층, 5층</td>
+                <td><a href="http://kko.to/IIiCkmf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            65#}
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>동대문구민회관(장한로18길 82-9) 1층</td>
+                <td><a href="http://kko.to/q6CCCm4fo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>동대문소방서(장한로 34) 1층</td>
+                <td><a href="http://kko.to/VYFooCf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>동대문우체국(천호대로 4) 1층</td>
+                <td><a href="http://kko.to/4QopBCffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>서울명병원(고산자로 421) 옥상</td>
+                <td><a href="http://kko.to/NpwpBk4fj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>삼육서울병원(망우로 82) 1층</td>
+                <td><a href="http://kko.to/ICWHoC4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            70#}
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>한빛로 12(신설동) 1층</td>
+                <td><a href="http://kko.to/iZEjokf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>래미안엘파인아파트 한천로37길 33(답십리동) 1층</td>
+                <td><a href="http://kko.to/eggaoCf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>장한로 37(장안동) 1층</td>
+                <td><a href="http://kko.to/m1JaBkffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>장한로2길 33, 2층, 3층, 4층, 5층</td>
+                <td><a href="http://kko.to/NHJzBCf4M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>동대문구</td>
+                <td>부분개방형</td>
+                <td>왕산로 214 롯데백화점 1층, 3층, 7층 옥상</td>
+                <td><a href="http://kko.to/PGscBk440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>동대문구</td>
+                <td>완전폐쇄형</td>
+                <td>천호대로 421 옥상</td>
+                <td><a href="http://kko.to/I2JZBkf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            75#}
+            </tbody>
+        </table>
+</div>
+</div>
+
+
+
+{% endblock %}

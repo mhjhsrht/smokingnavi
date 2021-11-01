@@ -1,0 +1,69 @@
+{% extends 'smoking/graph_base.html' %}
+{% block content %}
+
+<style>
+.bigbox {text-align:center; position:sticky;z-index:999;}
+
+.wc {
+    border: 2px solid #D8D8D8;
+    border-radius:15px;
+    width:80%;
+    height:80%;
+    margin : 10px auto;
+    text-align:center;
+}
+
+.wcimg {width : 80%;}
+
+h5 {text-align:center;}
+
+</style>
+    {#담배 값#}
+    <div id="container4" style ="width:100%;">
+        <h5>담배값 및 담배 판매량 추이</h5>
+    <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://www.moef.go.kr/nw/nes/detailNesDtaView.do?menuNo=4010100&searchNttId1=MOSF_000000000053516&searchBbsId1=MOSFBBS_000000000028" style="color: blue">
+        기획재정부</a>의 자료를 기반으로 작성되었습니다.
+    <iframe src="../static/charts/cigarette_price(2).html" width="100%"  height="500" frameborder="0" framespacing="0" marginheight="0" scrolling="no" vspace="0"></iframe>
+  </div>
+<br/><br/>
+{#워드클라우드#}
+  <div id="container5">
+       <h5>흡연 관련 워드 클라우드</h5>
+      <div class="infomessage" style="text-align:center;">
+          <sup>최근 네이버 기사를 크롤링하여 단어 출현 빈도를 분석 후 만든 <strong style="color:blue;">워드 클라우드</strong>입니다.</sup>
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">흡연구역</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131795979-f80bf4ff-2f49-4758-9b7b-c0aa2d496cb0.png">
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">흡연</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131796324-1f318dda-7702-46bb-9f2b-aafcb509de18.png">
+      </div>
+      <div class="wc">
+          <sub><strong style="color:red;">담배</strong> 네이버 기사 워드 클라우드</sub><br><br>
+          <img class="wcimg" src="https://user-images.githubusercontent.com/73421028/131796421-33c88ec7-0561-4641-8689-6eb7d64c95ff.png">
+      </div>
+  </div>
+<br/><br/>
+       {#청소년 흡연율 및 간접흡연 노출률#}
+    <div id="container6">
+      <h5>청소년 흡연율 및 간접흡연 노출률</h5>
+       <p style="text-align:center;font-size:12px;">모든 정보는 <a href="https://data.seoul.go.kr/" style="color: blue">
+      서울 열린데이터 광장</a>의 자료를 기반으로 작성되었습니다.</p>
+
+        <div id="container6-1" style="float:left;">
+      <img style="width:490px; height:400px;" src="https://user-images.githubusercontent.com/73293902/137081472-491e9252-4ed8-48d8-ab9d-05b8532ae711.png">
+        </div>
+      <div id="container6-2">
+            <iframe src="../static/charts/youth.html" width="550" height="400" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+      </div>
+<br/><br/>
+      <div id="container6-3" style="float:left;">
+      <img style="width:490px; height:400px;" src="https://user-images.githubusercontent.com/73293902/137081482-d70af5cc-40a6-49a5-8abe-0cf85b40f091.png">
+      </div>
+      <div id="container6-4">
+        <iframe src="../static/charts/second_youth.html"  width="550" height="400" frameborder="0" framespacing="0" marginheight="0" marginwidth="0" scrolling="no" vspace="0"></iframe>
+    </div>
+</div>
+{% endblock %}

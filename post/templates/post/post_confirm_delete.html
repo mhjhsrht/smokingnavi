@@ -1,0 +1,11 @@
+{% extends "post/post_base.html" %}
+{% block title %}- Confirm Delete{% endblock %}
+
+{% block content %}
+<form action="delete/" method="POST">
+    {% csrf_token %}
+    <div class="alert alert-danger">글을 정말로 삭제하시겠습니까?</div>
+    <input type="submit" value="삭제" class="btn btn-outline-danger">
+    <a class="btn btn-outline-secondary" onclick="history.back()">취소</a>
+</form>
+{% endblock %}

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<style>
+
+{
+        margin:0;
+        padding:0;
+        border:0;
+        font: 맑은고딕;
+        text-decoration:none;
+        letter-spacing:0px;
+    }
+    html {height:100%;}
+
+    .wrap, .headbox
+    {
+        width:100%;
+        font-size:14px;
+        font-weight:bold;
+        text-align:center;
+        margin:0 auto;
+    }
+
+    .menubar
+    {
+        width:100%
+        margin: 0 auto;
+        text-align:center;
+        height:55px;
+
+    }
+
+    .menuItem
+    {
+        text-align:center;
+        height:55px;
+        margin-top:25px;
+        border-width: 0px 0px 0.5px 0px;
+        border-style: solid;
+        border-color: #57B59A;
+    }
+
+    .menuLogo
+    {
+        float:left;
+        position:absolute;
+        top:10px;
+        left:20px;
+        z-index:1000;
+    }
+
+    .menuLogin
+    {
+        float:right;
+        position:absolute;
+        top:35px;
+        right:0px;
+        clear:both;
+        z-index:1000;
+    }
+
+
+    .mi {
+        padding-top:13px;
+        height:45px;
+        display:inline-block;
+        margin-left:15px;
+        margin-right:15px;
+        width: 120px;
+    }
+
+    .mi:hover {
+        display:inline-block;
+        background-color: #E3F3F0;
+    }
+
+
+    footer {
+    margin-top:1150px;
+    }
+
+{#메뉴바 드롭다운 추가    #}
+* {
+      margin: 0;
+      padding: 0;
+   }
+/* ul li태그에 리스트 스타일을 없앰 */
+   ul li{
+      list-style: none;
+        color: black;
+   }
+/* menu태그 자식의 ul의 자식 li를 왼쪽정렬과 넓이 140설정 */
+   .mi > ul > li {
+      width:100%;
+      position:relative;
+        display: inline-block;
+   }
+    .mi > ul > li > ul {
+      width:100%;
+        display: none;
+        position: absolute;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        text-align: left;
+   }
+    .mi > ul > li:hover > ul {
+      display:block;
+   }
+    .dropbtn {
+        display: inline-block;
+        text-decoration: none;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .show {display:block;}
+
+/* 모바일에 적용될 스타일 */
+@media screen and (max-width: 1024px) {
+
+        {# 푸터 : 슬라이딩 효과 넣어서 넘어가는 기능, 버튼 디자인 추가 #}
+        /*--------좌우슬라이딩---------*/
+        @keyframes slidy {
+        0% {
+            margin-left: 0;
+        }
+        /* 0 ~ 10  : 정지 */
+        10% {
+            margin-left: 0;
+        }
+        /* 10 ~ 25 : 변이 */
+        25% {
+            margin-left: -100%;
+        }
+        /* 25 ~ 35 : 정지 */
+        35% {
+            margin-left: -100%;
+        }
+        /* 35 ~ 50 : 변이 */
+        50% {
+            margin-left: -200%;
+        }
+        60% {
+            margin-left: -200%;
+        }
+        75% {
+            margin-left: -300%;
+        }
+        85% {
+            margin-left: -300%;
+        }
+        100% {
+            margin-left: 0;
+        }
+        }
+
+        #main_slide {
+            height: 20%;
+            overflow: hidden;
+        }
+
+        #main_slide > div.wrap > div#slider {
+            overflow: hidden;
+            position: relative;
+        }
+
+        div#slider > div > img {
+             width: calc(100% / 4);
+             height: 20%;
+        }
+
+        div#slider > div {
+            position: relative;
+            width: 400%;
+            height: 20%;
+            margin: 0;
+            top: 0;
+            left: 0;
+            text-align: left;
+            font-size: 0;
+            -webkit-animation: 20s slidy ease-in-out infinite;
+            animation: 20s slidy ease-in-out infinite;
+        }
+
+        .container {
+            width: 100%;
+            z-index: -88;
+        }
+
+        .mi {
+        padding-top:13px;
+        top:0;
+        height:45px;
+        display:inline-block;
+        border-width: 0.2px;
+        border-style: solid;
+        border-radius : 10px;
+        border-color: #E3F3F0;
+        width: 110px;
+        margin-left:0;
+        margin-right:0;
+        margin-bottom:15px;
+        margin-top:55px;
+    }
+
+    .mi:hover {
+        display:inline-block;
+        background-color: #E3F3F0;
+    }
+
+    .menuItem
+    {
+        position:sticky;
+        z-index:999;
+        text-align:center;
+        width:100%;
+        height:130px;
+        padding:5px;
+        top:5px;
+        margin-top:10px;
+        border-width: 0 0 3px 0;
+        border-style: solid;
+        border-color: #57B59A;
+        background-color:#FFFFFF;
+    }
+
+    .menubar{
+        position:sticky;
+        width:100%;
+        height:185px;
+        z-index:999;
+        top:0px;
+    }
+
+    .headbox{
+        position:sticky;
+        width:100%;
+        height:185px;
+        z-index:999;
+        top:0px;
+    }
+
+        footer {
+        margin-top:1000px;
+        }
+
+        .menuLogo
+    {
+        float:left;
+        position:absolute;
+        top:0px;
+        left:20px;
+        z-index:1000;
+        margin-bottom:20px;
+    }
+
+    .menuLogin
+    {
+        float:right;
+        position:absolute;
+        top:20px;
+        right:0px;
+        clear:both;
+        z-index:1000;
+    }
+
+
+}
+
+/* 데스크탑에 적용될 스타일 */
+@media screen and (min-width: 1024px) {
+
+    {# 푸터 : 슬라이딩 효과 넣어서 넘어가는 기능, 버튼 디자인 추가 #}
+    /*--------좌우슬라이딩---------*/
+    @keyframes slidy {
+        0% {
+            margin-left: 0;
+        }
+        /* 0 ~ 10  : 정지 */
+        10% {
+            margin-left: 0;
+        }
+        /* 10 ~ 25 : 변이 */
+        25% {
+            margin-left: -100%;
+        }
+        /* 25 ~ 35 : 정지 */
+        35% {
+            margin-left: -100%;
+        }
+        /* 35 ~ 50 : 변이 */
+        50% {
+            margin-left: -200%;
+        }
+        60% {
+            margin-left: -200%;
+        }
+        75% {
+            margin-left: -300%;
+        }
+        85% {
+            margin-left: -300%;
+        }
+        100% {
+            margin-left: 0;
+        }
+    }
+
+    #main_slide {
+        height: 20%;
+        overflow: hidden;
+    }
+
+    #main_slide > div.wrap > div#slider {
+        overflow: hidden;
+        position: relative;
+    }
+
+    div#slider > div > img {
+         width: calc(100% / 4);
+         height: 20%;
+    }
+
+    div#slider > div {
+        position: relative;
+        width: 400%;
+        height: 20%;
+        margin: 0;
+        top:0;
+        left: 0;
+        text-align: left;
+        font-size: 0;
+        -webkit-animation: 20s slidy ease-in-out infinite;
+        animation: 20s slidy ease-in-out infinite;
+    }
+
+
+}
+
+header {
+width:100%;
+}
+
+.container {
+    min-height: 100%;
+    margin-bottom: -70px;
+    padding-bottom: 10%;
+}
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    <title>Smoking Navi {% block title %}{% endblock %}</title>
+</head>
+
+
+
+    <div class="headbox">
+
+        <div class="menuLogo" style="float:left;">
+                {% load static %}
+                <img style="width:180px; height: 60px;" src="https://user-images.githubusercontent.com/73421028/138217810-997ce8c4-fc26-4e77-a60b-a7078bf5f565.png" onclick="location.href='/'" width="500px" height="300px"/>
+        </div>
+
+        <div class="menuLogin" style="width:180px; height: 100px; margin-right:10px;">
+                {% if user.is_authenticated %}
+                    <p style="margin-right:12%;text-decoration:none; color:#57B59A;"><strong>{{user.get_username}} 님&nbsp;&nbsp;&nbsp;|&nbsp;<a href="/accounts/logout" style="text-decoration:none; color:#57B59A;">&nbsp;&nbsp;로그아웃</a></strong></p>
+                {% else %}
+                    <p style="margin-right:12%;text-decoration:none; color:#57B59A;"><strong><a href="/accounts/login" style="text-decoration:none; color:#57B59A;">로그인&nbsp;&nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="/accounts/register" style="text-decoration:none; color:#57B59A;">&nbsp;&nbsp;회원가입</a></strong></p>
+                {% endif %}
+        </div>
+
+        <div class="firstbox" style="width:100%;">
+
+
+
+<!--            <div class="menubar">-->
+                <div class="menuItem">
+                    <div class="mi"><a onclick="location.href='/'">내 위치</a></div>
+                    <div class="mi" style="color:#57B59A;"><a onclick="location.href='/location'">위치/유형</a></div>
+{#                    <div class="mi"><a onclick="location.href='/graph'">현황 시각화</a></div>#}
+
+                    <div class="mi dropbtn" href="javascript:void(0)" onclick="myFunction()">
+
+                            <ul>
+                             <li class="dropdowngraph">
+                                 <a onclick="location.href='/graph'">현황 시각화</a>
+                                <div class="dropdown-content" style="z-index:1000;" id="myDropdown">
+                                  <a style="color:black;" onclick="location.href='/graph_age'">흡연율 / 흡연량</a>
+                                  <a style="color:black;" onclick="location.href='/cp_cd'">단속 / 민원</a>
+                                  <a style="color:black;" onclick="location.href='/graph_cigaretteprice'">기타</a>
+                                </div>
+                             </li>
+                            </ul>
+                    </div>
+                   <div class="mi"><a onclick="location.href='/post/post_list'">게시판</a></div>
+                </div>
+<!--            </div>-->
+        </div>
+    </div>
+
+<script>
+    {#현황시각화 드롭다운 버튼 코드#}
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(e) {
+  if (!e.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var d = 0; d < dropdowns.length; d++) {
+      var openDropdown = dropdowns[d];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+</script>
+
+
+<br/>
+<div class="container">
+<body>
+<div class="blockcontents">
+{% block content %}
+{% endblock %}
+</div>
+<br/><br/><br/>
+</body>
+</div>
+
+{# 푸터 : 슬라이딩 효과 넣어서 넘어가는 기능, 버튼 디자인 추가 #}
+<footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+{# 데스크탑 버전 푸터 코딩 #}
+    <div id="main_slide">
+        <div class="wrap">
+            <div id="slider">
+                <div>
+                    <img src="{% static "smoking/images/new_banner5.png" %}">
+                    <img src="{% static "smoking/images/new_banner8.png" %}">
+                    <img src="{% static "smoking/images/new_banner6.png" %}">
+                    <img src="{% static "smoking/images/new_banner9.png" %}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</footer>
+</html>

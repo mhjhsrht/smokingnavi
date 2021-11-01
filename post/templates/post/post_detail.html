@@ -1,0 +1,87 @@
+{% extends "post/post_base.html" %}
+
+{% block content %}
+<style>
+/* 모바일에 적용될 스타일 */
+@media screen and (max-width: 768px) {
+    #submit-btn {
+        width:20%;
+        margin-top:1.5%;
+        float:right;
+    }
+    #textarea{
+        width:79%;
+    }
+}
+
+/* 데스크탑에 적용될 스타일 */
+@media screen and (min-width: 769px) {
+    #submit-btn {
+        margin-top:0.8%;
+        width:8%;
+        float:right;
+    }
+    #textarea {
+        width:90%;
+     }
+}
+</style>
+
+<body>
+<br/><br/><br/><br/>
+    <div class="container">
+        <form action="delete/" method="POST" style="float:right; margin-top:0;">
+            {% csrf_token %}
+            <a class="btn btn-outline-success" href="{% url 'post:post_list' %}" style ="float:left; margin-top:25px;margin-left:5px;">글 목록</a>
+            {% if user == post.author %}
+            <a class="btn btn-outline-success" href="edit/" style="float:left;margin-top:25px;margin-left:5px;">수정</a>
+{#            <button type="submit" class="btn btn-outline-danger" style="margin-top:25px;margin-left:5px;">삭제</button>#}
+            <a class="btn btn-outline-danger" href="confirm_delete/" style="float:left;margin-top:25px;margin-left:5px;">삭제</a>
+            {% endif %}
+        </form>
+        <h4>{{ post.number }}</h4>
+        <h3><a href="" style="text-decoration:none; color:#57B59A;">{{ post.title }}</a></h3>
+        <div class="text">{{ post.text|linebreaksbr }}</div>
+    </div>
+
+<!--    {% for comment in post.comments.all %}-->
+<!--        <div class="comment">-->
+<!--            <div class="date">{{ comment.created_at }}</div>-->
+<!--            <strong>{{ comment.author }}</strong>-->
+<!--            <p>{{ comment.comment_text|linebreaks }}</p>-->
+<!--        </div>-->
+<!--    <hr/>-->
+<!--    {% empty %}-->
+<!--        <p>아직 댓글이 없습니다.</p>-->
+<!--    {% endfor %}-->
+<br/><br/>
+    <div class="container">
+        <div class="card my-4">
+        <h5 class="card-header">댓글 달기</h5>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="body" type="text" value="" id ="textarea" rows=3></textarea>
+                <button type="submit" id = "submit-btn" class="btn btn-outline-secondary">댓글<br/>달기</button>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <hr/>
+    {% for comment in comments %}
+        {% if request.user == comment.author %}
+        <strong><a href="comment_delete/{{ comment.pk }}" style="float:right; text-decoration:none;">삭제</a></strong>
+        {% endif %}
+        <strong>{{comment.author}}</strong>
+        <br/>{{comment.body}}
+        <p style="float:right; font-size:13px;">{{comment.date}}</p>
+    <hr/>
+    {% endfor %}
+
+    {% csrf_token %}
+    </div>
+</body>
+
+
+{% endblock %}
+

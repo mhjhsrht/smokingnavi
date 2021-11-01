@@ -1,0 +1,1037 @@
+{% extends 'smoking/location_base.html' %}
+{% block title %}- 위치/유형 페이지{% endblock %}
+
+{% block content %}
+
+<style>
+     .dropdown-menu {
+        max-height: 400px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    div#map {margin:0px auto}
+
+     .box {
+        position : absolute;
+        top : 180px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+    .dropdown>a {
+    background-color: lightgray;
+}
+
+.dropdown>a:hover {
+    background-color: #57B59A;
+}
+    #map{position:relative;overflow:hidden;}
+.dropdown, .dropdown *{margin:0;color:#000;}
+.dropdown {position:absolute;top:200px;left:28px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+.typebox {width: 144px; position:absolute; top:10px; right:10px; z-index:10; text-align:center; background-color:#fff; padding : 7px;
+          border-radius:10px;}
+.smalltype {margin-bottom:3px;}
+
+    @media screen and (max-width: 936px) {
+        .container {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .box2 > .table {
+            scroll-behavior: auto;
+            font-size: x-small;
+            white-space: nowrap;
+        }
+
+        .dropdown {position:absolute;top:170px;left:20px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+        .box {
+        position : absolute;
+        top : 220px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+
+    }
+</style>
+<div class="container" style="margin-top: 10px">
+
+   <div class = "dropdown">
+        <button style="color:white;" class = "btn btn-secondary dropdown-toggle" data-toggle="dropdown">구 선택</button>
+            <a class="dropdown-item" href="{% url 'smoking:gangnam_map' %}" style="height:25px;font-size:13px;">강남구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangdong_map' %}" style="height:25px;font-size:13px;">강동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangbuk_map' %}" style="height:25px;font-size:13px;">강북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangseo_map' %}" style="height:25px;font-size:13px;">강서구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwanak_map' %}" style="height:25px;font-size:13px">관악구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwangjin_map' %}" style="height:25px;font-size:13px">광진구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:guro_map' %}" style="height:25px;font-size:13px">구로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:geumcheon_map' %}" style="height:25px;font-size:13px">금천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:nowon_map' %}" style="height:25px;font-size:13px">노원구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dobong_map' %}" style="height:25px;font-size:13px">도봉구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongdaemun_map' %}" style="height:25px;font-size:13px">동대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongjak_map' %}" style="height:25px;font-size:13px">동작구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:mapo_map' %}" style="height:25px;font-size:13px">마포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seodaemun_map' %}" style="height:25px;font-size:13px">서대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seocho_map' %}" style="height:25px;font-size:13px">서초구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongdong_map' %}" style="height:25px;font-size:13px">성동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongbuk_map' %}" style="height:25px;font-size:13px">성북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:songpa_map' %}" style="height:25px;font-size:13px">송파구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yangcheon_map' %}" style="height:25px;font-size:13px">양천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yeongdeungpo_map' %}" style="height:25px;font-size:13px">영등포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yongsan_map' %}" style="height:25px;font-size:13px">용산구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:eunpyeong_map' %}" style="height:25px;font-size:13px">은평구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jongro_map' %}" style="height:25px;font-size:13px">종로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jung_map' %}" style="height:25px;font-size:13px">중구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jungrang_map' %}" style="height:25px;font-size:13px">중랑구</a>
+       </div>
+
+</div>
+
+<div class="box" align="center">
+    <br/>
+    <h4><strong>용산구 흡연구역 상세 지도</strong></h4>
+    <sub><strong style="color:blue">정보공개포털</strong>과 <strong style="color:blue">공공데이터포털</strong>의 데이터를 기반으로 만들어졌습니다.</sub><br/><br/>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=541b6d15b257b828a3da0c50a02d541e"></script>
+
+<div id="map" style="width:100%;height:600px;">
+    <div class="typebox">
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png">완전폐쇄형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png">완전개방형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png">부분개방형 </div>
+        <div class="smalltype2"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042829-0ce402dd-d54a-4775-924c-4d1e74724099.png">&nbsp&nbsp&nbsp&nbsp&nbsp기타&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </div>
+    </div>
+</div>
+<br/><br/>
+
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(37.54064172312942, 126.98174874753948), // 지도의 중심좌표
+        level: 6 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+var fullopenpositions = [
+    {
+        title: '서울역 광장 15번출구', // 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울역 광장 15번출구<br>완전개방형<br><a href="http://kko.to/kG8Bgy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55368110897535, 126.96932791466875), // 1 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '서울지방보훈청 실외', // 7
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울지방보훈청 실외<br>완전개방형<br><a href="http://kko.to/kUu4gyf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53493923329487, 126.97418939926153), // 7 좌표
+        category : '완전개방형'
+    },
+];
+
+var littleopenpositions = [
+    {
+        title: '서울역 광장 1번출구', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울역 광장 1번출구<br>부분개방형<br><a href="http://kko.to/4Bdpgy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5549881328009, 126.9716361012647), // 2 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산역 광장', // 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산역 광장<br>부분개방형<br><a href="http://kko.to/-ugHPmf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.52907823354879, 126.96542922910342), // 3 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산구청 2층외부, 옥상', // 4
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산구청 2층외부, 옥상<br>부분개방형<br><a href="http://kko.to/WTz0gy4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53255627707809, 126.99056705585093), // 4 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산경찰서 1층 외부', // 5
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산경찰서 1층 외부<br>부분개방형<br><a href="http://kko.to/DXYDgmf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54127387235249, 126.96752256716901), // 5 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '원효지구대 방범순찰대(옛 용산구청)', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">원효지구대 방범순찰대(옛 용산구청)<br>부분개방형<br><a href="http://kko.to/gb6Ygy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53882945091733, 126.96589429284285), // 6 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산세무서 1층 외부', // 8
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산세무서 1층 외부<br>부분개방형<br><a href="http://kko.to/SEaaPmffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.523366793552505, 126.96870400172712), // 8 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '국방부 컨벤스 1층 외부', // 9
+        content: '<div style="padding:15px;width:350px;text-align: center;">국방부 컨벤스 1층 외부<br>부분개방형<br><a href="http://kko.to/JyLzgmffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.533898851077964, 126.9754739057304), // 9 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '순천향대학교 서울병원 장례식장 외부', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">순천향대학교 서울병원 장례식장 외부<br>부분개방형<br><a href="http://kko.to/9gQrPyffp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.534527501707494, 127.00465578253291), // 10 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '순천향대학교 서울병원 신관 옥상', // 11
+        content: '<div style="padding:15px;width:350px;text-align: center;">순천향대학교 서울병원 신관 옥상<br>부분개방형<br><a href="http://kko.to/Z9Pcgm44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53401616621848, 127.00508002936715), // 11 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '아이파크몰 달 주차장 4,5층', // 12
+        content: '<div style="padding:15px;width:350px;text-align: center;">아이파크몰 달 주차장 4,5층<br>부분개방형<br><a href="http://kko.to/26NZPm4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53097930412295, 126.96528410281269), // 12 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '아이파크몰 해 주차장 4,5층', // 13
+        content: '<div style="padding:15px;width:350px;text-align: center;">아이파크몰 해 주차장 4,5층<br>부분개방형<br><a href="http://kko.to/Sn4EPy44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.529141017396384, 126.96446473621796), // 13 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '아이파크몰 8층 옥상', // 14
+        content: '<div style="padding:15px;width:350px;text-align: center;">아이파크몰 8층 옥상<br>부분개방형<br><a href="http://kko.to/DyLEPm44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5288527258058, 126.96456103616711), // 14 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '선인상가 21동 1층외부, 옥상', // 15
+        content: '<div style="padding:15px;width:350px;text-align: center;">선인상가 21동 1층외부, 옥상<br>부분개방형<br><a href="http://kko.to/YschPy4fo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53270022451769, 126.96531158990113), // 15 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '아모레퍼시픽 10층 테라스', // 16
+        content: '<div style="padding:15px;width:350px;text-align: center;">아모레퍼시픽 10층 테라스<br>부분개방형<br><a href="http://kko.to/E4iNgy44j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.52893949311868, 126.96871015862301), // 16 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '제일기획 1층 외부 주차장', // 17
+        content: '<div style="padding:15px;width:350px;text-align: center;">제일기획 1층 외부 주차장<br>부분개방형<br><a href="http://kko.to/kbKqPy4fH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.534890240077104, 126.99878654897859), // 17 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용문하이오피스텔 옥상', // 18
+        content: '<div style="padding:15px;width:350px;text-align: center;">용문하이오피스텔 옥상<br>부분개방형<br><a href="http://kko.to/Gplvgm44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53670385727634, 126.96108942618808), // 18 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '충영빌딩 옥상', // 19
+        content: '<div style="padding:15px;width:350px;text-align: center;">충영빌딩 옥상<br>부분개방형<br><a href="http://kko.to/EXFKPy44T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.538406398103376, 126.9600419262938), // 19 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'e테크밸리 공개공지, 옥상', // 20
+        content: '<div style="padding:15px;width:350px;text-align: center;">e테크밸리 공개공지, 옥상<br>부분개방형<br><a href="http://kko.to/165ePmffB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53334868115062, 126.95760080191413), // 20 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '삼원빌딩 옥상', // 21
+        content: '<div style="padding:15px;width:350px;text-align: center;">삼원빌딩 옥상<br>부분개방형<br><a href="http://kko.to/yC4GPm4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53466915625811, 126.95904261414665), // 21 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '대교빌딩 옥상', // 22
+        content: '<div style="padding:15px;width:350px;text-align: center;">대교빌딩 옥상<br>부분개방형<br><a href="http://kko.to/IB5_Pyff0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53404245374005, 126.95760606620445), // 22 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '현대자동차사옥 옥상', // 23
+        content: '<div style="padding:15px;width:350px;text-align: center;">현대자동차사옥 옥상<br>부분개방형<br><a href="http://kko.to/2XdQPyffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53235088923424, 126.95189636087001), // 23 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '진성빌딩 옥상', // 24
+        content: '<div style="padding:15px;width:350px;text-align: center;">진성빌딩 옥상<br>부분개방형<br><a href="http://kko.to/SufCgm44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.534856133754076, 126.96622421484923), // 24 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '미성상사㈜ 1층 외부, 옥상', // 25
+        content: '<div style="padding:15px;width:350px;text-align: center;">미성상사㈜ 1층 외부, 옥상<br>부분개방형<br><a href="http://kko.to/rTsoxy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53914325322221, 126.9684286809623), // 25 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '조양빌딩 옥상', // 26
+        content: '<div style="padding:15px;width:350px;text-align: center;">조양빌딩 옥상<br>부분개방형<br><a href="http://kko.to/OQ4pEyffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53626315666827, 126.96356468792004), // 26 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '하나실업빌딩 옥상', // 27
+        content: '<div style="padding:15px;width:350px;text-align: center;">하나실업빌딩 옥상<br>부분개방형<br><a href="http://kko.to/Ex-Hxy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53473276220205, 126.96061808228549), // 27 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '오리온제과 옥상', // 28
+        content: '<div style="padding:15px;width:350px;text-align: center;">오리온제과 옥상<br>부분개방형<br><a href="http://kko.to/3EQDxm4fo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.536246955364014, 126.97003372293618), // 28 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '오리온제과 공장 옥상, 주차장', // 29
+        content: '<div style="padding:15px;width:350px;text-align: center;">오리온제과 공장 옥상, 주차장<br>부분개방형<br><a href="http://kko.to/3EQDxm4fo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53577162068914, 126.9698104545017), // 29 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '우경빌딩 옥상, 1층 외부', // 30
+        content: '<div style="padding:15px;width:350px;text-align: center;">우경빌딩 옥상, 1층 외부<br>부분개방형<br><a href="http://kko.to/d_5aEm4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53421045713782, 126.96145277367482), // 30 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'POBA 지방행정공제회 건물 1층 주차장', // 31
+        content: '<div style="padding:15px;width:350px;text-align: center;">POBA 지방행정공제회 건물 1층 주차장<br>부분개방형<br><a href="http://kko.to/hHKzxm4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53163396845134, 126.97058145639048), // 31 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '넥서스밸리 1층 외부', // 32
+        content: '<div style="padding:15px;width:350px;text-align: center;">넥서스밸리 1층 외부<br>부분개방형<br><a href="http://kko.to/aAtcEyffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.534114674669645, 126.96490079825902), // 32 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'GS한강에끌라트 1층 외부', // 33
+        content: '<div style="padding:15px;width:350px;text-align: center;">GS한강에끌라트 1층 외부<br>부분개방형<br><a href="http://kko.to/wC8Oxmffj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53151883237432, 126.95538434894115), // 33 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한강그랜드오피스 주차장 옆', // 34
+        content: '<div style="padding:15px;width:350px;text-align: center;">한강그랜드오피스 주차장 옆<br>부분개방형<br><a href="http://kko.to/0dMbxy4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.531180829344095, 126.95504796867161), // 34 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산전자오피스텔 옥상, 건물옆', // 35
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산전자오피스텔 옥상, 건물옆<br>부분개방형<br><a href="http://kko.to/32Fsxm4fp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.532125250276806, 126.95671336039722), // 35 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'NH농협은행 용산별관(하나로마트) 옥상', // 36
+        content: '<div style="padding:15px;width:350px;text-align: center;">NH농협은행 용산별관(하나로마트) 옥상<br>부분개방형<br><a href="http://kko.to/HO9lxyffj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53327895093144, 126.96474845112452), // 36 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '대우아이빌 16층 옥상, 1층 외부', // 37
+        content: '<div style="padding:15px;width:350px;text-align: center;">대우아이빌 16층 옥상, 1층 외부<br>부분개방형<br><a href="http://kko.to/Qmbyvm44B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53163134928683, 126.96914461295584), // 37 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '유베이스 1층 외부', // 38
+        content: '<div style="padding:15px;width:350px;text-align: center;">유베이스 1층 외부<br>부분개방형<br><a href="http://kko.to/Q5VCvy44o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53764719459273, 126.96697255121165), // 38 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '대원빌딩 1층 현관옆', // 39
+        content: '<div style="padding:15px;width:350px;text-align: center;">대원빌딩 1층 현관옆<br>부분개방형<br><a href="http://kko.to/_WABKy44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53522026779854, 126.96362742383592), // 39 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '기독교대한감리회여선교회관 1층 외부', // 41
+        content: '<div style="padding:15px;width:350px;text-align: center;">기독교대한감리회여선교회관 1층 외부<br>부분개방형<br><a href="http://kko.to/MtptKy44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5350135867679, 127.01136798992792), // 41 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '일각빌딩 5층', // 42
+        content: '<div style="padding:15px;width:350px;text-align: center;">일각빌딩 5층<br>부분개방형<br><a href="http://kko.to/HdJtKyf4T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54030481605343, 126.98977685526918), // 42 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한남빌딩 5층 외부', // 43
+        content: '<div style="padding:15px;width:350px;text-align: center;">한남빌딩 5층 외부<br>부분개방형<br><a href="http://kko.to/0a0nKyf4j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.535045637531525, 126.99727609380362), // 43 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '남영비비안 1층 외부(정자)', // 44
+        content: '<div style="padding:15px;width:350px;text-align: center;">남영비비안 1층 외부(정자)<br>부분개방형<br><a href="http://kko.to/LOGPdyffp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5227489141015, 126.99111694188666), // 44 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '서울역 풍림 아이원플러스 공개공지', // 45
+        content: '<div style="padding:15px;width:350px;text-align: center;">서울역 풍림 아이원플러스 공개공지<br>부분개방형<br><a href="http://kko.to/Hiuxdmffp">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55500985172275, 126.96845876966836), // 45 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세광음악사 옥상', // 46
+        content: '<div style="padding:15px;width:350px;text-align: center;">세광음악사 옥상<br>부분개방형<br><a href="http://kko.to/9mOWdmffT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55401806460239, 126.96597507998406), // 46 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한화빌딩 1층 외부', // 47
+        content: '<div style="padding:15px;width:350px;text-align: center;">한화빌딩 1층 외부<br>부분개방형<br><a href="http://kko.to/y59hKmf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.552052461371154, 126.9689692730148), // 47 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '보은개발빌딩 옥상', // 49
+        content: '<div style="padding:15px;width:350px;text-align: center;">보은개발빌딩 옥상<br>부분개방형<br><a href="http://kko.to/u17eKmffj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55080016049745, 126.96930080371257), // 49 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '애전빌딩 옥상', // 50
+        content: '<div style="padding:15px;width:350px;text-align: center;">애전빌딩 옥상<br>부분개방형<br><a href="http://kko.to/6VlJdm44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54175891371981, 126.97039077672301), // 50 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한진중공업 빌딩 5층 외부', // 51
+        content: '<div style="padding:15px;width:350px;text-align: center;">한진중공업 빌딩 5층 외부<br>부분개방형<br><a href="http://kko.to/2m2VKyf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54054986406073, 126.9726401276714), // 51 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'KCC IT빌딩 옥상', // 52
+        content: '<div style="padding:15px;width:350px;text-align: center;">KCC IT빌딩 옥상<br>부분개방형<br><a href="http://kko.to/QTylAm44H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54860016617772, 126.97209966122006), // 52 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '금강토탈패션할인매장 주차장', // 53
+        content: '<div style="padding:15px;width:350px;text-align: center;">금강토탈패션할인매장 주차장<br>부분개방형<br><a href="http://kko.to/MQq8eyf40">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.543640029122336, 126.97152441671022), // 53 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '용산빌딩 1층 외부(건물뒤편)', // 54
+        content: '<div style="padding:15px;width:350px;text-align: center;">용산빌딩 1층 외부(건물뒤편)<br>부분개방형<br><a href="http://kko.to/4PFKey44j">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54263779833217, 126.97207359474558), // 54 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '청룡빌딩 주차장', // 55
+        content: '<div style="padding:15px;width:350px;text-align: center;">청룡빌딩 주차장<br>부분개방형<br><a href="http://kko.to/ZJ8eAyffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54132245429316, 126.972566296558), // 55 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '롯데지알에스 옥상, 주차장', // 56
+        content: '<div style="padding:15px;width:350px;text-align: center;">롯데지알에스 옥상, 주차장<br>부분개방형<br><a href="http://kko.to/e5GUeyf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54168940332071, 126.97168357216637), // 56 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '금강빌딩 주차장', // 57
+        content: '<div style="padding:15px;width:350px;text-align: center;">금강빌딩 주차장<br>부분개방형<br><a href="http://kko.to/_73GAm4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54473062763839, 126.97318741204292), // 57 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '수빌딩 옥상', // 58
+        content: '<div style="padding:15px;width:350px;text-align: center;">수빌딩 옥상<br>부분개방형<br><a href="http://kko.to/tOnwem4fj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53278051624446, 126.97067717427882), // 58 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '우리빌딩 주차장', // 59
+        content: '<div style="padding:15px;width:350px;text-align: center;">우리빌딩 주차장<br>부분개방형<br><a href="http://kko.to/q1-Qey4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54096226376653, 126.97348295533877), // 59 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '기업은행용산지점 2층 베란다', // 60
+        content: '<div style="padding:15px;width:350px;text-align: center;">기업은행용산지점 2층 베란다<br>부분개방형<br><a href="http://kko.to/ILURAy44M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.541989344680026, 126.97322233966378), // 60 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '진흥빌딩 옥상', // 61
+        content: '<div style="padding:15px;width:350px;text-align: center;">진흥빌딩 옥상<br>부분개방형<br><a href="http://kko.to/pDLyeyf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54842789320793, 126.97758811844041), // 61 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한치과의원 건물 주차장', // 62
+        content: '<div style="padding:15px;width:350px;text-align: center;">한치과의원 건물 주차장<br>부분개방형<br><a href="http://kko.to/cWcBIm44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54593201162052, 126.97699195210848), // 62 좌표
+        category : '부분개방형'
+    },
+    {
+        title: 'LS용산타워 주차장', // 63
+        content: '<div style="padding:15px;width:350px;text-align: center;">LS용산타워 주차장<br>부분개방형<br><a href="http://kko.to/SIGjImffT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.52809681951093, 126.96782808085263), // 63 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한국폴리텍대학 정수캠퍼스', // 64
+        content: '<div style="padding:15px;width:350px;text-align: center;">한국폴리텍대학 정수캠퍼스<br>부분개방형<br><a href="http://kko.to/GqBfImffT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.52883997550318, 126.99665408716932), // 64 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '한국폴리텍대학 정수캠퍼스', // 65
+        content: '<div style="padding:15px;width:350px;text-align: center;">한국폴리텍대학 정수캠퍼스<br>부분개방형<br><a href="http://kko.to/VZOrImf4M">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.52868902737858, 126.99571509068195), // 65 좌표
+        category : '부분개방형'
+    },
+];
+
+// 부분개방형 마커 이미지의 이미지 주소입니다
+var loimageSrc = "https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png";
+
+for (var i = 0; i < littleopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var lomarkerImage = new kakao.maps.MarkerImage(loimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: littleopenpositions[i].latlng, // 마커를 표시할 위치
+        image : lomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: littleopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+// ---------------------------------------------------------------------------------------------
+
+// 완전개방형 마커 이미지의 이미지 주소입니다
+var foimageSrc = "https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png";
+
+for (var i = 0; i < fullopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var fomarkerImage = new kakao.maps.MarkerImage(foimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: fullopenpositions[i].latlng, // 마커를 표시할 위치
+        image : fomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: fullopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+</script>
+<!--    box2-->
+    <br/>
+<div class="box2" align="center" style="width:100%; height:350px; overflow:auto">
+
+                <table class="table">
+            <thead class="thead" style="color:#4374D9">
+                <tr>
+                    <th scope="col">자치구</th>
+                    <th scope="col">흡연구역 유형</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">길찾기</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>서울역 광장 15번출구</td>
+                <td><a href="http://kko.to/kG8Bgy4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>서울역 광장 1번출구</td>
+                <td><a href="http://kko.to/4Bdpgy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용산역 광장</td>
+                <td><a href="http://kko.to/-ugHPmf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용산구청 2층외부, 옥상</td>
+                <td><a href="http://kko.to/WTz0gy4f0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용산경찰서 1층 외부</td>
+                <td><a href="http://kko.to/DXYDgmf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            5#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>원효지구대 방범순찰대(옛 용산구청)</td>
+                <td><a href="http://kko.to/gb6Ygy4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>서울지방보훈청 실외</td>
+                <td><a href="http://kko.to/kUu4gyf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용산세무서 1층 외부</td>
+                <td><a href="http://kko.to/SEaaPmffo/" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>국방부 컨벤스 1층 외부</td>
+                <td><a href="http://kko.to/JyLzgmffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>순천향대학교 서울병원 장례식장 외부</td>
+                <td><a href="ttp://kko.to/9gQrPyffp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            10#}
+             <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>순천향대학교 서울병원 신관 옥상</td>
+                <td><a href="http://kko.to/Z9Pcgm44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>아이파크몰 달 주차장 4,5층</td>
+                <td><a href="http://kko.to/26NZPm4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>아이파크몰 해 주차장 4,5층</td>
+                <td><a href="http://kko.to/Sn4EPy44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>아이파크몰 8층 옥상</td>
+                <td><a href="http://kko.to/DyLEPm44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>선인상가 21동 1층외부, 옥상</td>
+                <td><a href="http://kko.to/YschPy4fo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            15#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>아모레퍼시픽 10층 테라스</td>
+                <td><a href="http://kko.to/E4iNgy44j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>제일기획 1층 외부 주차장</td>
+                <td><a href="http://kko.to/kbKqPy4fH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용문하이오피스텔 옥상</td>
+                <td><a href="http://kko.to/Gplvgm44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>충영빌딩 옥상</td>
+                <td><a href="http://kko.to/EXFKPy44T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>e테크밸리 공개공지, 옥상</td>
+                <td><a href="http://kko.to/165ePmffB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            20#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>삼원빌딩 옥상</td>
+                <td><a href="http://kko.to/yC4GPm4f0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>대교빌딩 옥상</td>
+                <td><a href="http://kko.to/IB5_Pyff0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>현대자동차사옥 옥상</td>
+                <td><a href="http://kko.to/2XdQPyffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>진성빌딩 옥상</td>
+                <td><a href="http://kko.to/SufCgm44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>미성상사㈜ 1층 외부, 옥상</td>
+                <td><a href="http://kko.to/rTsoxy4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            25#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>조양빌딩 옥상</td>
+                <td><a href="http://kko.to/OQ4pEyffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>하나실업빌딩 옥상</td>
+                <td><a href="http://kko.to/Ex-Hxy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>오리온제과 옥상</td>
+                <td><a href="/" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>오리온제과 공장 옥상, 주차장</td>
+                <td><a href="http://kko.to/3EQDxm4fo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>우경빌딩 옥상, 1층 외부</td>
+                <td><a href="http://kko.to/d_5aEm4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            30#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>POBA 지방행정공제회 건물 1층 주차장</td>
+                <td><a href="http://kko.to/hHKzxm4fj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>넥서스밸리 1층 외부</td>
+                <td><a href="http://kko.to/aAtcEyffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>GS한강에끌라트 1층 외부</td>
+                <td><a href="http://kko.to/wC8Oxmffj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>한강그랜드오피스 주차장 옆</td>
+                <td><a href="http://kko.to/0dMbxy4fj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>용산전자오피스텔 옥상, 건물옆</td>
+                <td><a href="http://kko.to/32Fsxm4fp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            35#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>NH농협은행 용산별관(하나로마트) 옥상</td>
+                <td><a href="http://kko.to/HO9lxyffj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>대우아이빌 16층 옥상, 1층 외부</td>
+                <td><a href="http://kko.to/Qmbyvm44B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>유베이스 1층 외부</td>
+                <td><a href="http://kko.to/Q5VCvy44o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>대원빌딩 1층 현관옆</td>
+                <td><a href="http://kko.to/_WABKy44M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>기독교대한감리회여선교회관 1층 외부</td>
+                <td><a href="http://kko.to/MtptKy44M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            40#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>일각빌딩 5층</td>
+                <td><a href="http://kko.to/HdJtKyf4T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>한남빌딩 5층 외부</td>
+                <td><a href="http://kko.to/0a0nKyf4j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>남영비비안 1층 외부(정자)</td>
+                <td><a href="http://kko.to/LOGPdyffp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>서울역 풍림 아이원플러스 공개공지</td>
+                <td><a href="http://kko.to/Hiuxdmffp" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>세광음악사 옥상</td>
+                 <td><a href="http://kko.to/9mOWdmffT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            45#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>한화빌딩 1층 외부</td>
+                <td><a href="http://kko.to/y59hKmf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>보은개발빌딩 옥상</td>
+                <td><a href="http://kko.to/u17eKmffj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>애전빌딩 옥상</td>
+                <td><a href="http://kko.to/6VlJdm44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>한진중공업 빌딩 5층 외부</td>
+                <td><a href="http://kko.to/2m2VKyf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>KCC IT빌딩 옥상</td>
+                <td><a href="http://kko.to/QTylAm44H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            50#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>금강토탈패션할인매장 주차장</td>
+                <td><a href="http://kko.to/MQq8eyf40" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>용산빌딩 1층 외부(건물뒤편)</td>
+                <td><a href="http://kko.to/4PFKey44j" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>청룡빌딩 주차장</td>
+                <td><a href="http://kko.to/ZJ8eAyffH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>롯데지알에스 옥상, 주차장</td>
+                <td><a href="http://kko.to/e5GUeyf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>금강빌딩 주차장</td>
+                <td><a href="http://kko.to/_73GAm4fj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            60#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>수빌딩 옥상</td>
+                <td><a href="http://kko.to/tOnwem4fj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>우리빌딩 주차장</td>
+                <td><a href="http://kko.to/q1-Qey4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>기업은행용산지점 2층 베란다</td>
+                <td><a href="http://kko.to/ILURAy44M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>진흥빌딩 옥상</td>
+                <td><a href="http://kko.to/pDLyeyf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>한치과의원 건물 주차장</td>
+                <td><a href="http://kko.to/cWcBIm44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            65#}
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>LS용산타워 주차장</td>
+                <td><a href="http://kko.to/SIGjImffT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>완전개방형</td>
+                <td>한국폴리텍대학 정수캠퍼스</td>
+                <td><a href="http://kko.to/GqBfImffT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>용산구</td>
+                <td>부분개방형</td>
+                <td>한국폴리텍대학 정수캠퍼스</td>
+                <td><a href="http://kko.to/VZOrImf4M" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+</div>
+
+{% endblock %}

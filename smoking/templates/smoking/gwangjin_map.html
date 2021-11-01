@@ -1,0 +1,737 @@
+{% extends 'smoking/location_base.html' %}
+{% block title %}- 위치/유형 페이지{% endblock %}
+
+{% block content %}
+
+<style>
+     .dropdown-menu {
+        max-height: 400px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    div#map {margin:0px auto}
+
+     .box {
+        position : absolute;
+        top : 180px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+    .dropdown>a {
+    background-color: lightgray;
+}
+
+.dropdown>a:hover {
+    background-color: #57B59A;
+}
+    #map{position:relative;overflow:hidden;}
+.dropdown, .dropdown *{margin:0;color:#000;}
+.dropdown {position:absolute;top:200px;left:28px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+.typebox {width: 144px; position:absolute; top:10px; right:10px; z-index:10; text-align:center; background-color:#fff; padding : 7px;
+          border-radius:10px;}
+.smalltype {margin-bottom:3px;}
+
+    @media screen and (max-width: 936px) {
+        .container {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .box2 > .table {
+            scroll-behavior: auto;
+            font-size: x-small;
+            white-space: nowrap;
+        }
+
+        .dropdown {position:absolute;top:170px;left:20px; z-index:10;text-align:center;background-color:#FFFFFF;}
+
+        .box {
+        position : absolute;
+        top : 220px;
+        left: 15px;
+        width: 97%;
+
+        text-align: center;
+        border: 3px solid #57B59A;
+        border-radius: 10px;
+        padding: 2%;
+        background: #FDFFFF;
+    }
+
+    }
+</style>
+
+<div class="container" style="margin-top: 10px">
+
+   <div class = "dropdown">
+        <button style="color:white;" class = "btn btn-secondary dropdown-toggle" data-toggle="dropdown">구 선택</button>
+            <a class="dropdown-item" href="{% url 'smoking:gangnam_map' %}" style="height:25px;font-size:13px;">강남구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangdong_map' %}" style="height:25px;font-size:13px;">강동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangbuk_map' %}" style="height:25px;font-size:13px;">강북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gangseo_map' %}" style="height:25px;font-size:13px;">강서구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwanak_map' %}" style="height:25px;font-size:13px">관악구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:gwangjin_map' %}" style="height:25px;font-size:13px">광진구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:guro_map' %}" style="height:25px;font-size:13px">구로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:geumcheon_map' %}" style="height:25px;font-size:13px">금천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:nowon_map' %}" style="height:25px;font-size:13px">노원구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dobong_map' %}" style="height:25px;font-size:13px">도봉구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongdaemun_map' %}" style="height:25px;font-size:13px">동대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:dongjak_map' %}" style="height:25px;font-size:13px">동작구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:mapo_map' %}" style="height:25px;font-size:13px">마포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seodaemun_map' %}" style="height:25px;font-size:13px">서대문구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seocho_map' %}" style="height:25px;font-size:13px">서초구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongdong_map' %}" style="height:25px;font-size:13px">성동구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:seongbuk_map' %}" style="height:25px;font-size:13px">성북구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:songpa_map' %}" style="height:25px;font-size:13px">송파구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yangcheon_map' %}" style="height:25px;font-size:13px">양천구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yeongdeungpo_map' %}" style="height:25px;font-size:13px">영등포구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:yongsan_map' %}" style="height:25px;font-size:13px">용산구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:eunpyeong_map' %}" style="height:25px;font-size:13px">은평구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jongro_map' %}" style="height:25px;font-size:13px">종로구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jung_map' %}" style="height:25px;font-size:13px">중구</a>
+                <div class="dropdown-divider"></div> <!-- 구분선 -->
+            <a class="dropdown-item" href="{% url 'smoking:jungrang_map' %}" style="height:25px;font-size:13px">중랑구</a>
+       </div>
+
+</div>
+
+<div class="box" align="center">
+    <br/>
+    <h4><strong>광진구 흡연구역 상세 지도</strong></h4>
+    <sub><strong style="color:blue">정보공개포털</strong>과 <strong style="color:blue">공공데이터포털</strong>의 데이터를 기반으로 만들어졌습니다.</sub><br/><br/>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=541b6d15b257b828a3da0c50a02d541e"></script>
+
+<div id="map" style="width:100%;height:600px;">
+    <div class="typebox">
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png">완전폐쇄형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png">완전개방형 </div>
+        <div class="smalltype"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png">부분개방형 </div>
+        <div class="smalltype2"><img style="width:32px; height:32px;" src="https://user-images.githubusercontent.com/73421028/130042829-0ce402dd-d54a-4775-924c-4d1e74724099.png">&nbsp&nbsp&nbsp&nbsp&nbsp기타&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp </div>
+    </div>
+</div>
+<br/><br/>
+
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(37.5385333, 127.0801885), // 지도의 중심좌표
+        level: 6 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+var fullclosepositions = [
+     {
+        title: '건국대학교 상허연구관', // 6
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 상허연구관<br>부분개방형<br><a href="http://kko.to/Th79Hy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54425911296233, 127.0753791593365), // 6 좌표
+        category : '완전폐쇄형'
+    },
+];
+
+var fullopenpositions = [
+    {
+        title: '광진소방서', // 22
+        content: '<div style="padding:15px;width:350px;text-align: center;">광진소방서<br>완전개방형<br><a href="http://kko.to/ulXCTm4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5448015155103, 127.08277735973755), // 22 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '광진경찰서', // 23
+        content: '<div style="padding:15px;width:350px;text-align: center;">광진경찰서<br>완전개방형<br><a href="http://kko.to/VXnB0m4fH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54291760194562, 127.08394642468012), // 23 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '동서울 관광호텔', // 24
+        content: '<div style="padding:15px;width:350px;text-align: center;">동서울 관광호텔<br>완전개방형<br><a href="http://kko.to/Dfccjmffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53413595688694, 127.0918790865899), // 24 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '더 클래식 500 펜타즈', // 25
+        content: '<div style="padding:15px;width:350px;text-align: center;">더 클래식 500 펜타즈<br>완전개방형<br><a href="http://kko.to/63-Zjyf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53810585082091, 127.07082727925005), // 25 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '에이치 에비뉴 건대점', // 26
+        content: '<div style="padding:15px;width:350px;text-align: center;">에이치 에비뉴 건대점<br>완전개방형<br><a href="http://kko.to/BW5gjy44H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.546016829292675, 127.06660827166446), // 26 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '호텔더디자이너스프리미어건대', // 27
+        content: '<div style="padding:15px;width:350px;text-align: center;">호텔더디자이너스프리미어건대<br>완전개방형<br><a href="http://kko.to/zJexjy4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.547338667514076, 127.06727426915683), // 27 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '호텔케이월드', // 28
+        content: '<div style="padding:15px;width:350px;text-align: center;">호텔케이월드<br>완전개방형<br><a href="http://kko.to/tKVi0mf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54056979504931, 127.06341257183038), // 28 좌표
+        category : '완전개방형'
+    },
+    {
+        title: 'SK 네트웍스 (주) 워커힐', // 29
+        content: '<div style="padding:15px;width:350px;text-align: center;">SK 네트웍스 (주) 워커힐<br>완전개방형<br><a href="http://kko.to/IVvFjy44o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.555088114021565, 127.11090934138498), // 29 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '수내닭꼬치구의점', // 30
+        content: '<div style="padding:15px;width:350px;text-align: center;">수내닭꼬치구의점<br>완전개방형<br><a href="http://kko.to/eG8hjy4fT">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54236806713818, 127.08384114149202), // 30 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '구의1동 주민자치센터', // 31
+        content: '<div style="padding:15px;width:350px;text-align: center;">구의1동 주민자치센터<br>완전개방형<br><a href="http://kko.to/apib0m44p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54240505617989, 127.08565729834262), // 31 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '광진구청 ', // 32
+        content: '<div style="padding:15px;width:350px;text-align: center;">광진구청<br>완전개방형<br><a href="http://kko.to/Rxnl0m4fM">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53855334988819, 127.08239706451467), // 32 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '새천년관 대공연장', // 33
+        content: '<div style="padding:15px;width:350px;text-align: center;">새천년관 대공연장<br>완전개방형<br><a href="http://kko.to/-Gj80yffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54335232126771, 127.07736977517564), // 33 좌표
+        category : '완전개방형'
+    },
+    {
+        title: '광진우체국', // 34
+        content: '<div style="padding:15px;width:350px;text-align: center;">광진우체국<br>완전개방형<br><a href="http://kko.to/Zk650m4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.53780410801476, 127.09048056860902), // 34 좌표
+        category : '완전개방형'
+    },
+];
+
+var littleopenpositions = [
+    {
+        title: '건국대학교 경영관뒤', // 1
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 경영관뒤<br>부분개방형<br><a href="http://kko.to/DH6yMmffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54436688482038, 127.07592241943632), // 1 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 공학관 우측', // 2
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 공학관 우측<br>부분개방형<br><a href="http://kko.to/4mgCpmffo">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54158054465457, 127.07934811071982), // 2 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 법학관', // 3
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 법학관<br>부분개방형<br><a href="http://kko.to/pmhtHm44H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.541907783482756, 127.07494115349347), // 3 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 경영관', // 4
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 경영관<br>부분개방형<br><a href="http://kko.to/DH6yMmffH">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54437588389152, 127.0759394020516), // 4 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 상허도서관 입구', // 5
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 상허도서관 입구<br>부분개방형<br><a href="http://kko.to/B3frHy4f0">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.541949094125485, 127.07372480086973), // 5 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 생명과학관 우측', // 7
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 생명과학관 우측<br>부분개방형<br><a href="http://kko.to/whCrHyf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54102056083102, 127.07452726241009), // 7 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 수의과학관 뒤', // 8
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 수의과학관 뒤<br>부분개방형<br><a href="http://kko.to/wDSZHyf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54032238992674, 127.07436249930959), // 8 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 신공학관', // 9
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 신공학관<br>부분개방형<br><a href="http://kko.to/EIdgHmf4p">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.540391218382645, 127.07935816540385), // 9 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 인문관뒤', // 10
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 인문관뒤<br>부분개방형<br><a href="http://kko.to/cwEETy4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54257012142507, 127.07825439584137), // 10 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 학생회관 좌측', // 11
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 학생회관 좌측<br>부분개방형<br><a href="http://kko.to/xU5WTy44T">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54197785136752, 127.07804727264337), // 11 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '건국대학교 행정관 뒤', // 12
+        content: '<div style="padding:15px;width:350px;text-align: center;">건국대학교 행정관 뒤<br>부분개방형<br><a href="http://kko.to/EApFTmffB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.543214095165844, 127.07515745524469), // 12 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 군자관 좌측', // 13
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 군자관 좌측<br>부분개방형<br><a href="http://kko.to/3-uFTyffB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.549650365353195, 127.07375218937987), // 13 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 대양홀센터', // 14
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 대양홀센터<br>부분개방형<br><a href="http://kko.to/3uoeHmf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.548683567373494, 127.07451225869588), // 14 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 동천관(학술정보원)', // 15
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 동천관(학술정보원)<br>부분개방형<br><a href="http://kko.to/WdUAHmf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.551688498098294, 127.07435115704509), // 15 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 모차르트홀', // 16
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 모차르트홀<br>부분개방형<br><a href="http://kko.to/68rJHmffj">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5482806378119, 127.07408749824151), // 16 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 애지헌 우측', // 17
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 애지헌 우측<br>부분개방형<br><a href="http://kko.to/TcRGHy440">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.550862086925015, 127.0739457662279), // 17 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 용덕관 우측', // 18
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 용덕관 우측<br>부분개방형<br><a href="http://kko.to/2rk1Tyf4o">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55135352577296, 127.07331251574159), // 18 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '세종대학교 학생회관 우측', // 19
+        content: '<div style="padding:15px;width:350px;text-align: center;">세종대학교 학생회관 우측<br>부분개방형<br><a href="http://kko.to/8x5RTm4fB">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.54960894285225, 127.07514407198956), // 19 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '중곡4동 주민자치센터', // 20
+        content: '<div style="padding:15px;width:350px;text-align: center;">중곡4동 주민자치센터<br>부분개방형<br><a href="http://kko.to/qJ-yTyf4H">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.55907521722418, 127.0894452324438), // 20 좌표
+        category : '부분개방형'
+    },
+    {
+        title: '광나루지구대', // 21
+        content: '<div style="padding:15px;width:350px;text-align: center;">광나루지구대<br>부분개방형<br><a href="http://kko.to/dCBCHyf4B">길찾기</a></div>',
+        latlng: new kakao.maps.LatLng(37.5444339430608, 127.10331488874569), // 21 좌표
+        category : '부분개방형'
+    },
+];
+
+// 부분개방형 마커 이미지의 이미지 주소입니다
+var loimageSrc = "https://user-images.githubusercontent.com/73421028/130042815-976e3814-7941-492d-bdb6-dc34039980a1.png";
+
+for (var i = 0; i < littleopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var lomarkerImage = new kakao.maps.MarkerImage(loimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: littleopenpositions[i].latlng, // 마커를 표시할 위치
+        image : lomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: littleopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+// ---------------------------------------------------------------------------------------------
+
+// 완전폐쇄형 마커 이미지의 이미지 주소입니다
+var fcimageSrc = "https://user-images.githubusercontent.com/73421028/130042810-11cff1f2-de87-4a9c-86c1-89f874e49533.png";
+
+for (var i = 0; i < fullclosepositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var markerImage = new kakao.maps.MarkerImage(fcimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: fullclosepositions[i].latlng, // 마커를 표시할 위치
+        image : markerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: fullclosepositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+// ----------------------------------------------------------------------------------------
+
+// 완전개방형 마커 이미지의 이미지 주소입니다
+var foimageSrc = "https://user-images.githubusercontent.com/73421028/130042821-0d328094-0a1f-427c-82cd-45b9ec3e3c6f.png";
+
+for (var i = 0; i < fullopenpositions.length; i ++) {
+
+    // 마커 이미지의 이미지 크기 입니다
+    var imageSize = new kakao.maps.Size(36, 36);
+
+    // 마커 이미지를 생성합니다
+    var fomarkerImage = new kakao.maps.MarkerImage(foimageSrc, imageSize);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: fullopenpositions[i].latlng, // 마커를 표시할 위치
+        image : fomarkerImage // 마커 이미지
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content: fullopenpositions[i].content, // 인포윈도우에 표시할 내용
+        removable:true
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+</script>
+
+<!--    box2-->
+
+    <br/>
+<div class="box2" align="center" style="width:100%; height:350px; overflow:auto">
+
+        <table class="table">
+            <thead class="thead" style="color:#4374D9">
+                <tr>
+                    <th scope="col">자치구</th>
+                    <th scope="col">흡연구역 유형</th>
+                    <th scope="col">주소</th>
+                    <th scope="col">길찾기</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 경영관뒤</td>
+                <td><a href="http://kko.to/DH6yMmffH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 공학관 우측</td>
+                <td><a href="http://kko.to/4mgCpmffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 법학관</td>
+                <td><a href="http://kko.to/pmhtHm44H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 경영관</td>
+                <td><a href="http://kko.to/DH6yMmffH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 상허도서관 입구</td>
+                <td><a href="http://kko.to/B3frHy4f0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            5#}
+            <tr>
+                <td>광진구</td>
+                <td>완전폐쇄형</td>
+                <td>건국대학교 상허연구관</td>
+                <td><a href="http://kko.to/Th79Hy4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 생명과학관 우측</td>
+                <td><a href="http://kko.to/whCrHyf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 수의과학관 뒤</td>
+                <td><a href="http://kko.to/wDSZHyf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 신공학관</td>
+                <td><a href="http://kko.to/EIdgHmf4p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 인문관뒤</td>
+                <td><a href="http://kko.to/cwEETy4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            10#}
+            <tr>
+                <td>광진구</td>
+                <td>완전폐쇄형</td>
+                <td>건국대학교 학생회관 좌측</td>
+                <td><a href="http://kko.to/xU5WTy44T" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>건국대학교 행정관 뒤</td>
+                <td><a href="http://kko.to/EApFTmffB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 군자관 좌측</td>
+                <td><a href="http://kko.to/3-uFTyffB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 대양홀센터</td>
+                <td><a href="http://kko.to/3uoeHmf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 동천관(학술정보원)</td>
+                <td><a href="http://kko.to/WdUAHmf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            15#}
+            <tr>
+                <td>광진구</td>
+                <td>완전폐쇄형</td>
+                <td>세종대학교 모차르트홀</td>
+                <td><a href="http://kko.to/68rJHmffj" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 애지헌 우측</td>
+                <td><a href="http://kko.to/TcRGHy440" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 용덕관 우측</td>
+                <td><a href="http://kko.to/2rk1Tyf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>세종대학교 학생회관 우측</td>
+                <td><a href="http://kko.to/8x5RTm4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>광진구</td>
+                <td>부분개방형</td>
+                <td>중곡4동 주민자치센터</td>
+                <td><a href="http://kko.to/qJ-yTyf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            20#}
+            <tr>
+                <td>광진구</td>
+                <td>완전폐쇄형</td>
+                <td>광나루지구대</td>
+                <td><a href="http://kko.to/dCBCHyf4B" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>광진소방서</td>
+                <td><a href="http://kko.to/ulXCTm4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>광진경찰서</td>
+                <td><a href="http://kko.to/VXnB0m4fH" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>동서울 관광호텔</td>
+                <td><a href="http://kko.to/Dfccjmffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+             <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>더 클래식 500 펜타즈</td>
+                <td><a href="http://kko.to/63-Zjyf4H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            25#}
+             <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>에이치 에비뉴 건대점</td>
+                <td><a href="http://kko.to/BW5gjy44H" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전폐쇄형</td>
+                <td>호텔더디자이너스프리미어건대</td>
+                <td><a href="http://kko.to/zJexjy4fB" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>호텔케이월드</td>
+                <td><a href="http://kko.to/tKVi0mf4o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>SK 네트웍스 (주) 워커힐</td>
+                <td><a href="http://kko.to/IVvFjy44o" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>수내닭꼬치구의점</td>
+                <td><a href="http://kko.to/eG8hjy4fT" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+{#            30#}
+               <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>구의1동 주민자치센터</td>
+                <td><a href="http://kko.to/apib0m44p" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>광진구청</td>
+                <td><a href="http://kko.to/Rxnl0m4fM" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>새천년관 대공연장</td>
+                <td><a href="http://kko.to/-Gj80yffo" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+               <tr>
+                <td>광진구</td>
+                <td>완전개방형</td>
+                <td>광진우체국</td>
+                <td><a href="http://kko.to/Zk650m4f0" style="text-decoration:none;">길찾기</a></td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+
+</div>
+
+
+{% endblock %}
