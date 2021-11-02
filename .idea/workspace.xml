@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82159aa1-2a15-48af-896c-6eef60ec058b" name="Default Changelist" comment="">
+    <list default="true" id="7f9334f5-8302-49f8-9507-19bd6853b0e3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/1101cd.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cd.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/location_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/location_base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/dobong_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/dobong_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/dongdaemun_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/dongdaemun_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/dongjak_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/dongjak_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/eunpyeong_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/eunpyeong_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gangbuk_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gangbuk_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gangdong_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gangdong_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gangnam_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gangnam_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gangseo_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gangseo_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/geumcheon_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/geumcheon_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/graph.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/graph.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/graph_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/graph_base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/guro_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/guro_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gwanak_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gwanak_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/gwangjin_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/gwangjin_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/jongro_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/jongro_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/jung_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/jung_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/jungrang_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/jungrang_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/mapo_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/mapo_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/nowon_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/nowon_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/seocho_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/seocho_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/seodaemun_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/seodaemun_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/seongbuk_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/seongbuk_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/seongdong_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/seongdong_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/songpa_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/songpa_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/yangcheon_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/yangcheon_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/yeongdeungpo_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/yeongdeungpo_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smoking/templates/smoking/yongsan_map.html" beforeDir="false" afterPath="$PROJECT_DIR$/smoking/templates/smoking/yongsan_map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +46,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="20J3WZPnquekoSJwhRMGLGHDcx6" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="20Jfr9ZLbeSxcU2vI3C8rZUAkW6" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -22,48 +54,31 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
-  <component name="RunManager">
-    <configuration name="cd" type="Python.DjangoServer" factoryName="Django server">
-      <module name="cd" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method v="2" />
-    </configuration>
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="82159aa1-2a15-48af-896c-6eef60ec058b" name="Default Changelist" comment="" />
-      <created>1635748902591</created>
+      <changelist id="7f9334f5-8302-49f8-9507-19bd6853b0e3" name="Default Changelist" comment="" />
+      <created>1635767806431</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1635748902591</updated>
-      <workItem from="1635748905176" duration="7600000" />
-      <workItem from="1635760636031" duration="2759000" />
-      <workItem from="1635763800188" duration="286000" />
+      <updated>1635767806431</updated>
     </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
